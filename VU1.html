@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLV·SECURE — Chargé de Crédit</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0F1E;--ink2:#1E2640;--ink3:#2D3A5C;
+  --blue:#1B4FD8;--blue2:#2563EB;--blue3:#60A5FA;
+  --gold:#B8860B;--gold2:#D4A017;--gold3:#F0C040;
+  --surf:#FFFFFF;--surf2:#F8F9FC;--surf3:#EEF0F6;
+  --muted:#6B7694;--faint:#D1D5E8;
+  --ok:#059669;--okbg:#ECFDF5;--okbd:#A7F3D0;
+  --err:#DC2626;--errbg:#FEF2F2;--errbd:#FECACA;
+  --warn:#D97706;--warnbg:#FFFBEB;--warnbd:#FDE68A;
+  --r6:6px;--r10:10px;--r14:14px;--r20:20px;
+  --sh:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.06);
+  --shmd:0 2px 8px rgba(0,0,0,.06),0 12px 32px rgba(0,0,0,.08);
+  --font:'Plus Jakarta Sans',sans-serif;
+  --serif:'Instrument Serif',serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--font);background:var(--surf2);color:var(--ink);font-size:13.5px;-webkit-font-smoothing:antialiased;line-height:1.5}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font);cursor:pointer}
+input,select,textarea{font-family:var(--font)}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--faint);border-radius:4px}
+
+/* ── LAYOUT ── */
+.app{display:flex;min-height:100vh;position:relative}
+.sidebar{width:248px;flex-shrink:0;background:var(--ink);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;overflow-y:auto}
+.main-area{margin-left:248px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{height:58px;background:var(--surf);border-bottom:1px solid var(--faint);display:flex;align-items:center;padding:0 28px;gap:12px;position:sticky;top:0;z-index:40;box-shadow:0 1px 0 var(--faint)}
+.page-body{flex:1;padding:28px 32px;overflow-y:auto}
+.status-bar{height:22px;background:var(--ink);display:flex;align-items:center;padding:0 16px;gap:16px}
+.status-bar span{font-size:10px;color:rgba(255,255,255,.28);font-family:var(--mono);letter-spacing:.3px}
+.status-bar .sdot{width:5px;height:5px;border-radius:50%;background:#10B981;flex-shrink:0;animation:blink 2.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── SIDEBAR ── */
+.sb-logo{padding:20px 16px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-logo-row{display:flex;align-items:center;gap:10px}
+.sb-shield{width:34px;height:34px;flex-shrink:0}
+.sb-wordmark{font-family:var(--serif);font-size:16px;color:#fff;letter-spacing:.3px;font-style:italic}
+.sb-tagline{font-size:9px;color:rgba(255,255,255,.25);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.sb-pill{margin:10px 12px;background:rgba(27,79,216,.25);border:1px solid rgba(96,165,250,.2);border-radius:8px;padding:7px 11px;display:flex;align-items:center;gap:8px}
+.sb-pill-dot{width:6px;height:6px;border-radius:50%;background:#10B981;animation:blink 2.4s infinite}
+.sb-pill-role{font-size:10.5px;font-weight:600;color:rgba(255,255,255,.75);letter-spacing:.3px}
+.sb-pill-id{font-family:var(--mono);font-size:9.5px;color:rgba(255,255,255,.3);margin-left:auto}
+.sb-section{padding:10px 8px 2px}
+.sb-sec-label{font-size:9px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,.22);padding:5px 8px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.42);font-size:12.5px;font-weight:400;transition:all .15s;position:relative;user-select:none;border:1px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75)}
+.nav-item.active{background:rgba(255,255,255,.1);color:#fff;font-weight:500;border-color:rgba(255,255,255,.05)}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:8px;bottom:8px;width:3px;background:linear-gradient(180deg,var(--gold2),var(--gold3));border-radius:2px}
+.nav-ico{width:14px;height:14px;flex-shrink:0;opacity:.6}
+.nav-item.active .nav-ico{opacity:1}
+.nav-badge{margin-left:auto;background:#EF4444;color:#fff;font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:8px;font-family:var(--mono)}
+.sb-user{margin-top:auto;padding:12px 8px;border-top:1px solid rgba(255,255,255,.06)}
+.sb-user-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .15s}
+.sb-user-row:hover{background:rgba(255,255,255,.06)}
+.sb-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue3));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;font-family:var(--mono)}
+.sb-un{font-size:11.5px;font-weight:600;color:#fff;line-height:1.3}
+.sb-ur{font-size:10px;color:rgba(255,255,255,.3)}
+.sb-out{margin-left:auto;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:16px;padding:3px;transition:color .15s}
+.sb-out:hover{color:rgba(255,255,255,.6)}
+
+/* ── TOPBAR ── */
+.tb-bc{flex:1;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.tb-cur{color:var(--ink);font-weight:600}
+.tb-divider{color:var(--faint)}
+.tb-search{display:flex;align-items:center;gap:7px;background:var(--surf2);border:1px solid var(--faint);border-radius:8px;padding:0 11px;height:34px;width:210px;transition:border-color .15s}
+.tb-search:focus-within{border-color:var(--blue2)}
+.tb-search input{border:none;outline:none;background:transparent;font-size:12.5px;color:var(--ink);width:100%}
+.tb-search input::placeholder{color:var(--muted)}
+.tb-icon-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--faint);background:var(--surf);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);transition:all .15s;position:relative;font-size:14px}
+.tb-icon-btn:hover{background:var(--surf2);color:var(--ink)}
+.tb-notif-dot{position:absolute;top:7px;right:7px;width:6px;height:6px;border-radius:50%;background:#EF4444;border:1.5px solid #fff}
+.tb-role-tag{padding:4px 11px;border-radius:6px;font-size:10px;font-weight:700;background:var(--ink);color:rgba(255,255,255,.7);font-family:var(--mono);letter-spacing:.5px}
+
+/* ── PAGE HEADER ── */
+.ph{margin-bottom:22px}
+.ph-row{display:flex;align-items:flex-end;gap:14px;margin-bottom:22px}
+.ph-row .ph-left{flex:1}
+.ph h1{font-family:var(--serif);font-size:22px;font-style:italic;color:var(--ink);letter-spacing:-.2px;line-height:1.2}
+.ph p{font-size:12.5px;color:var(--muted);margin-top:4px}
+
+/* ── CARDS ── */
+.card{background:var(--surf);border:1px solid var(--faint);border-radius:var(--r14);box-shadow:var(--sh)}
+.card-head{display:flex;align-items:center;gap:9px;padding:14px 18px;border-bottom:1px solid var(--faint)}
+.card-title{font-size:12.5px;font-weight:700;color:var(--ink);flex:1;letter-spacing:-.1px}
+.card-body{padding:18px}
+.card-body.np{padding:0}
+
+/* ── KPI STRIP ── */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.kpi-card{background:var(--surf);border:1px solid var(--faint);border-radius:var(--r14);padding:16px 18px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.kpi-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;border-radius:var(--r14) var(--r14) 0 0}
+.kpi-b::after{background:linear-gradient(90deg,var(--blue),var(--blue3))}
+.kpi-g::after{background:linear-gradient(90deg,var(--gold),var(--gold3))}
+.kpi-ok::after{background:linear-gradient(90deg,var(--ok),#34D399)}
+.kpi-err::after{background:linear-gradient(90deg,var(--err),#F87171)}
+.kpi-label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.kpi-val{font-family:var(--serif);font-size:30px;font-style:italic;color:var(--ink);letter-spacing:-.5px;line-height:1}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:5px}
+.kpi-up{color:var(--ok)}
+.kpi-dn{color:var(--err)}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);padding:9px 14px;text-align:left;background:var(--surf2);border-bottom:1px solid var(--faint)}
+tbody tr{border-bottom:1px solid var(--surf3);transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--surf2)}
+td{padding:11px 14px;vertical-align:middle}
+td.mc{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+td.bold{font-weight:600;color:var(--ink)}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2.5px 8px;border-radius:20px;font-size:10.5px;font-weight:600;line-height:1.5}
+.b-ok{background:var(--okbg);color:var(--ok);border:1px solid var(--okbd)}
+.b-err{background:var(--errbg);color:var(--err);border:1px solid var(--errbd)}
+.b-warn{background:var(--warnbg);color:var(--warn);border:1px solid var(--warnbd)}
+.b-info{background:#EFF6FF;color:var(--blue2);border:1px solid #BFDBFE}
+.b-neu{background:var(--surf3);color:var(--muted);border:1px solid var(--faint)}
+.bdot{width:4px;height:4px;border-radius:50%;background:currentColor}
+
+/* ── CHIP ── */
+.chip{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:500;background:var(--surf3);color:var(--muted);border:1px solid var(--faint)}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-family:var(--font);font-size:12.5px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:all .15s;letter-spacing:-.1px}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.btn-primary:hover{background:var(--ink2)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;box-shadow:0 2px 8px rgba(184,134,11,.35)}
+.btn-gold:hover{filter:brightness(1.05);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--muted);border-color:var(--faint)}
+.btn-ghost:hover{background:var(--surf2);color:var(--ink)}
+.btn-ok{background:var(--ok);color:#fff;box-shadow:0 2px 6px rgba(5,150,105,.3)}
+.btn-ok:hover{filter:brightness(1.05)}
+.btn-err{background:var(--err);color:#fff}
+.btn-err:hover{filter:brightness(1.05)}
+.btn-sm{padding:5px 12px;font-size:11.5px}
+.btn-xs{padding:3px 9px;font-size:11px}
+
+/* ── FORMS ── */
+.fgrid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.fgrid1{display:grid;grid-template-columns:1fr;gap:12px}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.fg input,.fg select,.fg textarea{padding:9px 11px;border:1px solid var(--faint);border-radius:8px;font-family:var(--font);font-size:12.5px;color:var(--ink);background:var(--surf);outline:none;transition:border-color .15s,box-shadow .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.fg input[readonly],.fg select[disabled]{background:var(--surf2);color:var(--muted)}
+.fg textarea{resize:vertical;min-height:80px;line-height:1.6}
+.fg .hint{font-size:10.5px;color:var(--muted)}
+
+/* ── ALERT ── */
+.alert{display:flex;gap:9px;padding:10px 13px;border-radius:9px;font-size:12.5px;margin-bottom:12px;line-height:1.5}
+.al-info{background:#EFF6FF;color:var(--blue2);border:1px solid #BFDBFE}
+.al-ok{background:var(--okbg);color:var(--ok);border:1px solid var(--okbd)}
+.al-warn{background:var(--warnbg);color:var(--warn);border:1px solid var(--warnbd)}
+.al-err{background:var(--errbg);color:var(--err);border:1px solid var(--errbd)}
+.alert-icon{flex-shrink:0;margin-top:1px}
+
+/* ── WIZARD ── */
+.wizard{display:flex;align-items:center;padding:16px 20px;background:var(--surf2);border-bottom:1px solid var(--faint);border-radius:var(--r14) var(--r14) 0 0;gap:0;overflow-x:auto}
+.wstep{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.wnum{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--faint);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:var(--muted);background:var(--surf);transition:all .2s;flex-shrink:0}
+.wlbl{font-size:11.5px;font-weight:500;color:var(--muted);transition:color .2s}
+.wsep{flex:1;height:1.5px;background:var(--faint);min-width:18px;max-width:44px;transition:background .3s}
+.wstep.done .wnum{background:var(--ink);border-color:var(--ink);color:#fff}
+.wstep.done .wlbl{color:var(--ink);font-weight:600}
+.wstep.active .wnum{background:var(--blue2);border-color:var(--blue2);color:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.wstep.active .wlbl{color:var(--blue2);font-weight:700}
+.wsep.done{background:var(--ink)}
+
+/* ── UPLOAD ── */
+.upzone{border:1.5px dashed var(--faint);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:all .15s}
+.upzone:hover{border-color:var(--blue2);background:#EFF6FF}
+.file-item{display:flex;align-items:center;gap:9px;padding:9px 12px;background:var(--surf2);border-radius:8px;border:1px solid var(--faint);margin-top:8px}
+.fi-icon{font-size:18px;flex-shrink:0}
+.fi-name{font-size:12px;font-weight:600;color:var(--ink)}
+.fi-size{font-size:10.5px;color:var(--muted)}
+
+/* ── TIMELINE ── */
+.tl{list-style:none}
+.tl-item{display:flex;gap:11px;padding-bottom:14px;position:relative}
+.tl-item:last-child{padding-bottom:0}
+.tl-icon{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10.5px;z-index:1}
+.tl-line{position:absolute;left:11px;top:26px;bottom:0;width:1.5px;background:var(--faint)}
+.tl-time{font-size:10px;color:var(--muted);font-family:var(--mono)}
+.tl-title{font-size:12.5px;font-weight:600;color:var(--ink);margin-top:1px}
+.tl-desc{font-size:11.5px;color:var(--muted)}
+
+/* ── INFO GRID ── */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px}
+.info-item{display:flex;flex-direction:column;gap:2px}
+.info-k{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.info-v{font-size:12.5px;font-weight:500;color:var(--ink)}
+
+/* ── TOAST ── */
+.toast-container{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{display:flex;align-items:center;gap:9px;padding:10px 14px;background:var(--surf);border:1px solid var(--faint);border-radius:10px;box-shadow:var(--shmd);font-size:12.5px;max-width:320px;pointer-events:all;animation:slideUp .2s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.toast.tok{border-left:3px solid var(--ok)}
+.toast.terr{border-left:3px solid var(--err)}
+.toast.tinfo{border-left:3px solid var(--blue2)}
+.toast-close{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;line-height:1;padding:0}
+
+/* ── HELPERS ── */
+.flex{display:flex}.aic{align-items:center}.g6{gap:6px}.g8{gap:8px}.g12{gap:12px}.g16{gap:16px}
+.ml-auto{margin-left:auto}.mb12{margin-bottom:12px}.mb18{margin-bottom:18px}.mb24{margin-bottom:24px}
+.g2col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g2w{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.div{height:1px;background:var(--faint);margin:14px 0}
+.sr{font-family:var(--serif);font-style:italic}
+
+/* ── PAGES ── */
+.page{display:none;animation:fadeIn .15s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── QUICK ACTION ── */
+.qa-dark{background:var(--ink);border-radius:var(--r14);padding:18px;border:1px solid var(--ink2)}
+.qa-dark h3{font-family:var(--serif);font-style:italic;font-size:15px;color:#fff;margin-bottom:3px}
+.qa-dark p{font-size:11.5px;color:rgba(255,255,255,.35);margin-bottom:14px}
+
+.sm-stat{text-align:center;padding:14px;background:var(--surf2);border-radius:10px;border:1px solid var(--faint)}
+.sm-stat-v{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--ink)}
+.sm-stat-l{font-size:10.5px;color:var(--muted);margin-top:2px}
+</style>
+</head>
+<body>
+<div class="toast-container" id="tc"></div>
+<div class="app">
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-row">
+      <svg class="sb-shield" viewBox="0 0 34 34" fill="none">
+        <rect width="34" height="34" rx="7" fill="#132640"/>
+        <path d="M17 3.5L29 8.5V20C29 26.5 24 31 17 33C10 31 5 26.5 5 20V8.5Z" fill="#1B3A6E" stroke="rgba(255,255,255,.1)" stroke-width=".6"/>
+        <rect x="12.5" y="19" width="9" height="7.5" rx="2" fill="white" opacity=".92"/>
+        <path d="M14.5 19V15.5C14.5 12.8 19.5 12.8 19.5 15.5V19" stroke="white" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+        <circle cx="17" cy="22.2" r="1.3" fill="#0A0F1E" opacity=".7"/>
+        <rect x="16.4" y="22.2" width="1.2" height="2.2" rx=".6" fill="#0A0F1E" opacity=".7"/>
+        <rect x="5" y="30.5" width="24" height="2" rx="1" fill="url(#gl)"/>
+        <defs><linearGradient id="gl" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#8B6914"/><stop offset="50%" stop-color="#F0C040"/><stop offset="100%" stop-color="#8B6914"/></linearGradient></defs>
+      </svg>
+      <div>
+        <div class="sb-wordmark">MLV·SECURE</div>
+        <div class="sb-tagline">Banque · Mainlevée</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sb-pill">
+    <div class="sb-pill-dot"></div>
+    <span class="sb-pill-role">Chargé de crédit</span>
+    <span class="sb-pill-id">CC-001</span>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-sec-label">Activité</div>
+    <div class="nav-item active" onclick="goPage(this,'dashboard')">
+      <svg class="nav-ico" fill="none" viewBox="0 0 16 16"><path d="M2 7L8 2l6 5v7h-4v-3H6v3H2V7Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      Tableau de bord
+    </div>
+    <div class="nav-item" onclick="goPage(this,'nouvelle')">
+      <svg class="nav-ico" fill="none" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Nouvelle mainlevée
+    </div>
+    <div class="nav-item" onclick="goPage(this,'dossiers')">
+      <svg class="nav-ico" fill="none" viewBox="0 0 16 16"><path d="M3 4h10M3 8h10M3 12h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Mes dossiers
+      <span class="nav-badge">3</span>
+    </div>
+    <div class="nav-item" onclick="goPage(this,'transmis')">
+      <svg class="nav-ico" fill="none" viewBox="0 0 16 16"><path d="M2 8h12M10 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Transmis responsable
+    </div>
+  </div>
+  <div class="sb-section">
+    <div class="sb-sec-label">Paramètres</div>
+    <div class="nav-item" onclick="goPage(this,'profil')">
+      <svg class="nav-ico" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 13.5c0-2.5 2.5-4.5 5.5-4.5s5.5 2 5.5 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Mon profil
+    </div>
+  </div>
+
+  <div class="sb-user">
+    <div class="sb-user-row">
+      <div class="sb-av">AB</div>
+      <div><div class="sb-un">Ahmed Bensalem</div><div class="sb-ur">Casablanca Centre</div></div>
+      <button class="sb-out" onclick="toast('Déconnexion…','tinfo');setTimeout(()=>location.reload(),1000)" title="Déconnexion">↩</button>
+    </div>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<div class="main-area">
+  <div class="topbar">
+    <div class="tb-bc" id="breadcrumb">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 7L8 2l6 5v7h-4v-3H6v3H2V7Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      Accueil <span class="tb-divider">›</span> <span class="tb-cur">Tableau de bord</span>
+    </div>
+    <div class="flex aic g8">
+      <div class="tb-search">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="color:var(--muted);flex-shrink:0"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input placeholder="Rechercher un dossier…">
+      </div>
+      <button class="tb-icon-btn">🔔<span class="tb-notif-dot"></span></button>
+      <span class="tb-role-tag">CC-001</span>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <div class="page active" id="page-dashboard">
+      <div class="ph-row">
+        <div class="ph-left">
+          <h1>Tableau de bord</h1>
+          <p>Bienvenue Ahmed — voici l'état de vos mainlevées en cours</p>
+        </div>
+        <button class="btn btn-gold" onclick="goPage(document.querySelector('[onclick*=nouvelle]'),'nouvelle')">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Nouvelle mainlevée
+        </button>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-card kpi-b">
+          <div class="kpi-label">Mes dossiers</div>
+          <div class="kpi-val">12</div>
+          <div class="kpi-sub kpi-up">↑ +3 ce mois</div>
+        </div>
+        <div class="kpi-card kpi-g">
+          <div class="kpi-label">En attente validation</div>
+          <div class="kpi-val">3</div>
+          <div class="kpi-sub" style="color:var(--warn)">⏳ Chez le responsable</div>
+        </div>
+        <div class="kpi-card kpi-ok">
+          <div class="kpi-label">Validées</div>
+          <div class="kpi-val">8</div>
+          <div class="kpi-sub kpi-up">✓ Taux 89%</div>
+        </div>
+        <div class="kpi-card kpi-err">
+          <div class="kpi-label">À corriger</div>
+          <div class="kpi-val">1</div>
+          <div class="kpi-sub kpi-dn">⚠ Action requise</div>
+        </div>
+      </div>
+
+      <div class="g2w">
+        <div class="card mb18">
+          <div class="card-head">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--muted)"><rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 6h8M4 9h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <span class="card-title">Mes derniers dossiers</span>
+            <button class="btn btn-ghost btn-xs" onclick="goPage(document.querySelector('[onclick*=dossiers]'),'dossiers')">Voir tout →</button>
+          </div>
+          <div class="card-body np tbl-wrap">
+            <table>
+              <thead><tr><th>Référence</th><th>Client</th><th>Type</th><th>Montant</th><th>Statut</th><th></th></tr></thead>
+              <tbody>
+                <tr><td class="mc">MLV-2025-0142</td><td class="bold">Karim Mansouri</td><td><span class="chip">Auto</span></td><td class="bold">125 000 MAD</td><td><span class="badge b-ok"><span class="bdot"></span> Validée</span></td><td><button class="btn btn-ghost btn-xs">Voir</button></td></tr>
+                <tr><td class="mc">MLV-2025-0141</td><td class="bold">Fatima Zahra El A.</td><td><span class="chip">Immo</span></td><td class="bold">780 000 MAD</td><td><span class="badge b-warn"><span class="bdot"></span> En attente</span></td><td><button class="btn btn-ghost btn-xs">Voir</button></td></tr>
+                <tr><td class="mc">MLV-2025-0140</td><td class="bold">SARL Al Nour</td><td><span class="chip">Conso</span></td><td class="bold">45 000 MAD</td><td><span class="badge b-ok"><span class="bdot"></span> Validée</span></td><td><button class="btn btn-ghost btn-xs">QR</button></td></tr>
+                <tr><td class="mc">MLV-2025-0139</td><td class="bold">Mohamed Benali</td><td><span class="chip">Auto</span></td><td class="bold">87 000 MAD</td><td><span class="badge b-err"><span class="bdot"></span> Rejetée</span></td><td><button class="btn btn-err btn-xs" onclick="goPage(document.querySelector('[onclick*=nouvelle]'),'nouvelle');toast('Dossier rechargé pour correction','tinfo')">Corriger</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:13px">
+          <div class="card">
+            <div class="card-head"><span class="card-title">Activité récente</span></div>
+            <div class="card-body">
+              <ul class="tl">
+                <li class="tl-item"><div class="tl-icon" style="background:var(--okbg);color:var(--ok)">✓</div><div class="tl-line"></div><div><div class="tl-time">Auj. 14:32</div><div class="tl-title">MLV-0142 validée</div><div class="tl-desc">Dir. Rachidi a approuvé</div></div></li>
+                <li class="tl-item"><div class="tl-icon" style="background:#EFF6FF;color:var(--blue2)">→</div><div class="tl-line"></div><div><div class="tl-time">Auj. 10:15</div><div class="tl-title">MLV-0141 transmise</div><div class="tl-desc">En attente responsable</div></div></li>
+                <li class="tl-item"><div class="tl-icon" style="background:var(--errbg);color:var(--err)">✗</div><div><div class="tl-time">Hier 16:48</div><div class="tl-title">MLV-0139 rejetée</div><div class="tl-desc">Justificatif manquant</div></div></li>
+              </ul>
+            </div>
+          </div>
+          <div class="qa-dark">
+            <h3>Initier une mainlevée</h3>
+            <p>Désengagement bancaire suite au remboursement total d'un crédit</p>
+            <button class="btn btn-gold btn-sm" onclick="goPage(document.querySelector('[onclick*=nouvelle]'),'nouvelle')">+ Créer un dossier</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">Répartition par nature de crédit</span></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+            <div class="sm-stat"><div class="sm-stat-v">5</div><div class="sm-stat-l">Crédit auto</div></div>
+            <div class="sm-stat"><div class="sm-stat-v">4</div><div class="sm-stat-l">Crédit immo</div></div>
+            <div class="sm-stat"><div class="sm-stat-v">2</div><div class="sm-stat-l">Crédit conso</div></div>
+            <div class="sm-stat"><div class="sm-stat-v">1</div><div class="sm-stat-l">Crédit ent.</div></div>
+            <div class="sm-stat"><div class="sm-stat-v">0</div><div class="sm-stat-l">Autre</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ NOUVELLE MLV ═══ -->
+    <div class="page" id="page-nouvelle">
+      <div class="ph"><h1>Nouvelle mainlevée</h1><p>La mainlevée est délivrée par la <strong>banque créancière</strong> suite au remboursement total du crédit</p></div>
+      <div class="card mb18">
+        <div class="wizard" id="wiz">
+          <div class="wstep done" data-step="1"><div class="wnum">✓</div><span class="wlbl">Débiteur</span></div>
+          <div class="wsep done"></div>
+          <div class="wstep active" data-step="2"><div class="wnum">2</div><span class="wlbl">Crédit bancaire</span></div>
+          <div class="wsep"></div>
+          <div class="wstep" data-step="3"><div class="wnum">3</div><span class="wlbl">Justificatifs</span></div>
+          <div class="wsep"></div>
+          <div class="wstep" data-step="4"><div class="wnum">4</div><span class="wlbl">Validation</span></div>
+        </div>
+        <div class="card-body">
+          <!-- Step 1 -->
+          <div id="s1" style="display:none">
+            <div class="alert al-info mb12">
+              <span class="alert-icon">ℹ</span>
+              <span>Renseignez les informations exactes du <strong>débiteur</strong> titulaire du crédit remboursé.</span>
+            </div>
+            <div class="fgrid2 mb12">
+              <div class="fg"><label>Type de débiteur</label><select onchange="toggleDeb(this.value)"><option value="p">Particulier</option><option value="e">Entreprise</option></select></div>
+              <div class="fg"><label>CIN / Registre de commerce</label><input class="mc" placeholder="AB123456 / RC-001234"></div>
+            </div>
+            <div id="deb-p" class="fgrid2 mb12">
+              <div class="fg"><label>Nom de famille</label><input placeholder="Nom"></div>
+              <div class="fg"><label>Prénom(s)</label><input placeholder="Prénom"></div>
+            </div>
+            <div id="deb-e" class="fgrid1 mb12" style="display:none"><div class="fg"><label>Dénomination sociale</label><input placeholder="Raison sociale complète"></div></div>
+            <div class="fgrid2 mb12">
+              <div class="fg"><label>Téléphone</label><input placeholder="+212 6XX XXX XXX"></div>
+              <div class="fg"><label>Email</label><input placeholder="email@exemple.ma"></div>
+            </div>
+            <div class="fgrid1"><div class="fg"><label>Adresse complète</label><input placeholder="Rue, Ville, Code postal"></div></div>
+          </div>
+          <!-- Step 2 -->
+          <div id="s2">
+            <div class="alert al-info mb12">
+              <span class="alert-icon">ℹ</span>
+              <span>Renseignez les informations du <strong>crédit bancaire</strong> objet de la mainlevée. Le crédit a été accordé et remboursé à votre banque.</span>
+            </div>
+            <div class="fgrid2 mb12">
+              <div class="fg"><label>Nature du crédit</label>
+                <select onchange="toggleCredit(this.value)">
+                  <option value="auto">Crédit automobile</option>
+                  <option value="immo">Crédit immobilier</option>
+                  <option value="conso">Crédit à la consommation</option>
+                  <option value="ent">Crédit entreprise</option>
+                </select>
+              </div>
+              <div class="fg"><label>Numéro de dossier crédit</label><input class="mc" placeholder="DOS-2024-00789"></div>
+            </div>
+            <div id="cr-auto" class="fgrid2 mb12">
+              <div class="fg"><label>Immatriculation véhicule</label><input class="mc" placeholder="1234 A 56"></div>
+              <div class="fg"><label>Numéro VIN (châssis)</label><input class="mc" placeholder="17 caractères alphanumériques"></div>
+            </div>
+            <div id="cr-immo" class="fgrid2 mb12" style="display:none">
+              <div class="fg"><label>Référence foncière (TF)</label><input class="mc" placeholder="TF-12345/C"></div>
+              <div class="fg"><label>Superficie (m²)</label><input placeholder="120"></div>
+            </div>
+            <div class="fgrid2 mb12">
+              <div class="fg"><label>Montant total du crédit (MAD)</label><input placeholder="125 000,00"></div>
+              <div class="fg"><label>Date de remboursement final</label><input type="date" value="2025-04-15"></div>
+            </div>
+            <div class="fgrid2 mb12">
+              <div class="fg"><label>Date d'octroi du crédit</label><input type="date" value="2021-03-01"></div>
+              <div class="fg"><label>Durée initiale (mois)</label><input placeholder="48" value="48"></div>
+            </div>
+            <div class="fgrid1"><div class="fg"><label>Observations pour le responsable</label><textarea placeholder="Éléments complémentaires pour faciliter la validation…"></textarea></div></div>
+          </div>
+          <!-- Step 3 -->
+          <div id="s3" style="display:none">
+            <div class="alert al-warn mb12"><span class="alert-icon">⚠</span><span>Obligatoire : joignez la <strong>quittance de remboursement final</strong> émise par la banque et/ou l'attestation de clôture de compte.</span></div>
+            <div class="upzone mb12" onclick="toast('Sélection de fichiers (démonstration)','tinfo')">
+              <div style="font-size:28px;margin-bottom:8px">📎</div>
+              <div style="font-size:13px;font-weight:600;color:var(--muted)">Glissez vos pièces ici ou cliquez pour sélectionner</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:3px">PDF, JPG, PNG — Max 10 Mo par fichier</div>
+            </div>
+            <div class="file-item"><span class="fi-icon">📄</span><div style="flex:1"><div class="fi-name">quittance_remboursement_final.pdf</div><div class="fi-size">312 Ko · Téléversé</div></div><span class="badge b-ok">✓ OK</span></div>
+            <div class="file-item"><span class="fi-icon">📄</span><div style="flex:1"><div class="fi-name">attestation_cloture_compte.pdf</div><div class="fi-size">198 Ko · Téléversé</div></div><span class="badge b-ok">✓ OK</span></div>
+          </div>
+          <!-- Step 4 -->
+          <div id="s4" style="display:none">
+            <div class="alert al-err mb12"><span class="alert-icon">⚠</span><span><strong>Action irréversible.</strong> Une fois transmis au responsable, vous ne pouvez plus modifier ce dossier.</span></div>
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">Récapitulatif du dossier</div>
+            <div class="info-grid mb18">
+              <div class="info-item"><div class="info-k">Débiteur</div><div class="info-v">Karim Mansouri</div></div>
+              <div class="info-item"><div class="info-k">CIN</div><div class="info-v" style="font-family:var(--mono)">AB123456</div></div>
+              <div class="info-item"><div class="info-k">Nature crédit</div><div class="info-v">Crédit automobile</div></div>
+              <div class="info-item"><div class="info-k">Réf. dossier</div><div class="info-v" style="font-family:var(--mono)">DOS-2024-00789</div></div>
+              <div class="info-item"><div class="info-k">Immatriculation</div><div class="info-v" style="font-family:var(--mono)">1234 A 56</div></div>
+              <div class="info-item"><div class="info-k">Montant</div><div class="info-v" style="font-weight:700;color:var(--ok)">125 000,00 MAD</div></div>
+              <div class="info-item"><div class="info-k">Date remboursement</div><div class="info-v">15/04/2025</div></div>
+              <div class="info-item"><div class="info-k">Initiateur</div><div class="info-v">Ahmed Bensalem · CC-001</div></div>
+            </div>
+            <div class="div"></div>
+            <div style="font-size:11.5px;color:var(--muted)">Pièces jointes : quittance_remboursement_final.pdf · attestation_cloture_compte.pdf</div>
+          </div>
+        </div>
+        <div style="padding:13px 18px;border-top:1px solid var(--faint);display:flex;align-items:center;gap:8px">
+          <button class="btn btn-ghost btn-sm" id="btn-prev" style="display:none" onclick="stepNav(-1)">← Précédent</button>
+          <div class="ml-auto flex g8">
+            <button class="btn btn-ghost btn-sm" onclick="goPage(document.querySelector('[onclick*=dashboard]'),'dashboard')">Annuler</button>
+            <button class="btn btn-primary btn-sm" id="btn-next" onclick="stepNav(1)">Suivant →</button>
+            <button class="btn btn-gold btn-sm" id="btn-send" style="display:none" onclick="sendDossier()">✓ Transmettre au responsable</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ MES DOSSIERS ═══ -->
+    <div class="page" id="page-dossiers">
+      <div class="ph"><h1>Mes dossiers</h1><p>Toutes les mainlevées initiées par vous</p></div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Dossiers</span>
+          <div class="flex aic g8 ml-auto">
+            <select style="padding:5px 10px;border:1px solid var(--faint);border-radius:7px;font-family:var(--font);font-size:12px;color:var(--ink);background:var(--surf);outline:none"><option>Tous les statuts</option><option>Validée</option><option>En attente</option><option>Rejetée</option></select>
+          </div>
+        </div>
+        <div class="card-body np tbl-wrap">
+          <table>
+            <thead><tr><th>Référence</th><th>Client</th><th>CIN/RC</th><th>Nature</th><th>Montant</th><th>Date saisie</th><th>Statut</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td class="mc">MLV-2025-0142</td><td class="bold">Karim Mansouri</td><td class="mc">AB123456</td><td><span class="chip">Auto</span></td><td class="bold">125 000 MAD</td><td style="color:var(--muted)">28/04/2025</td><td><span class="badge b-ok"><span class="bdot"></span> Validée</span></td><td><button class="btn btn-ghost btn-xs">QR</button></td></tr>
+              <tr><td class="mc">MLV-2025-0141</td><td class="bold">Fatima Zahra El A.</td><td class="mc">EE789012</td><td><span class="chip">Immo</span></td><td class="bold">780 000 MAD</td><td style="color:var(--muted)">28/04/2025</td><td><span class="badge b-warn"><span class="bdot"></span> En attente</span></td><td><button class="btn btn-ghost btn-xs">Voir</button></td></tr>
+              <tr><td class="mc">MLV-2025-0140</td><td class="bold">SARL Al Nour</td><td class="mc">RC-00789</td><td><span class="chip">Conso</span></td><td class="bold">45 000 MAD</td><td style="color:var(--muted)">27/04/2025</td><td><span class="badge b-ok"><span class="bdot"></span> Validée</span></td><td><button class="btn btn-ghost btn-xs">QR</button></td></tr>
+              <tr><td class="mc">MLV-2025-0139</td><td class="bold">Mohamed Benali</td><td class="mc">CD456789</td><td><span class="chip">Auto</span></td><td class="bold">87 000 MAD</td><td style="color:var(--muted)">26/04/2025</td><td><span class="badge b-err"><span class="bdot"></span> Rejetée</span></td><td><button class="btn btn-err btn-xs" onclick="goPage(document.querySelector('[onclick*=nouvelle]'),'nouvelle');toast('Dossier rechargé — corrigez et renvoyez','tinfo')">Corriger</button></td></tr>
+              <tr><td class="mc">MLV-2025-0135</td><td class="bold">SCI Palmier Verde</td><td class="mc">RC-01234</td><td><span class="chip">Immo</span></td><td class="bold">1 200 000 MAD</td><td style="color:var(--muted)">22/04/2025</td><td><span class="badge b-ok"><span class="bdot"></span> Validée</span></td><td><button class="btn btn-ghost btn-xs">QR</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TRANSMIS ═══ -->
+    <div class="page" id="page-transmis">
+      <div class="ph"><h1>Transmis au responsable</h1><p>Dossiers en lecture seule — en attente de décision du directeur</p></div>
+      <div class="alert al-info mb18"><span class="alert-icon">ℹ</span><span>Ces dossiers sont <strong>en lecture seule</strong>. Toute modification n'est possible qu'après rejet par le responsable.</span></div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">En attente de validation <span class="badge b-warn" style="margin-left:6px">3</span></span></div>
+        <div class="card-body np tbl-wrap">
+          <table>
+            <thead><tr><th>Référence</th><th>Client</th><th>Nature</th><th>Montant</th><th>Transmis le</th><th>Délai écoulé</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td class="mc">MLV-2025-0141</td><td class="bold">Fatima Zahra El A.</td><td><span class="chip">Immo</span></td><td class="bold">780 000 MAD</td><td style="color:var(--muted)">28/04 · 10:15</td><td><span class="badge b-warn">4 h</span></td><td><span class="badge b-warn"><span class="bdot"></span> En attente</span></td></tr>
+              <tr><td class="mc">MLV-2025-0136</td><td class="bold">M. Benchrif</td><td><span class="chip">Auto</span></td><td class="bold">87 000 MAD</td><td style="color:var(--muted)">26/04 · 09:45</td><td><span class="badge b-err">2 j</span></td><td><span class="badge b-warn"><span class="bdot"></span> En attente</span></td></tr>
+              <tr><td class="mc">MLV-2025-0133</td><td class="bold">Nadia Berrada</td><td><span class="chip">Conso</span></td><td class="bold">28 000 MAD</td><td style="color:var(--muted)">24/04 · 14:00</td><td><span class="badge b-err">4 j</span></td><td><span class="badge b-warn"><span class="bdot"></span> En attente</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PROFIL ═══ -->
+    <div class="page" id="page-profil">
+      <div class="ph"><h1>Mon profil</h1></div>
+      <div class="g2col">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Informations personnelles</span></div>
+          <div class="card-body">
+            <div class="flex aic g12 mb18">
+              <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--ink),var(--blue));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;font-family:var(--mono)">AB</div>
+              <div><div style="font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink)">Ahmed Bensalem</div><div style="font-size:11.5px;color:var(--muted)">Chargé de crédit · Agence Casablanca Centre</div></div>
+            </div>
+            <div class="fgrid1 mb12"><div class="fg"><label>Nom complet</label><input value="Ahmed Bensalem"></div></div>
+            <div class="fgrid2 mb12"><div class="fg"><label>Email professionnel</label><input value="ahmed.bensalem@banque.ma"></div><div class="fg"><label>Matricule</label><input value="CC-001" readonly style="font-family:var(--mono)"></div></div>
+            <div class="fgrid2 mb12"><div class="fg"><label>Agence</label><input value="Casablanca Centre" readonly></div><div class="fg"><label>Poste interne</label><input value="ext. 2241"></div></div>
+            <div class="flex" style="justify-content:flex-end"><button class="btn btn-primary btn-sm" onclick="toast('Profil sauvegardé','tok')">Sauvegarder</button></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">Sécurité du compte</span></div>
+          <div class="card-body">
+            <div class="fgrid1 mb12"><div class="fg"><label>Mot de passe actuel</label><input type="password" placeholder="••••••••"></div></div>
+            <div class="fgrid1 mb12"><div class="fg"><label>Nouveau mot de passe</label><input type="password" placeholder="••••••••"></div></div>
+            <div class="fgrid1 mb12"><div class="fg"><label>Confirmer le mot de passe</label><input type="password" placeholder="••••••••"></div></div>
+            <div class="flex" style="justify-content:flex-end"><button class="btn btn-ghost btn-sm">Modifier le mot de passe</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <div class="status-bar">
+    <span class="sdot"></span>
+    <span>Système opérationnel</span>
+    <span>·</span>
+    <span>Banque Centrale — Agence Casablanca Centre</span>
+    <span style="margin-left:auto" id="clock">--:--:--</span>
+  </div>
+</div>
+</div>
+
+<script>
+let currentStep = 2;
+
+function goPage(el, pid) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById('page-' + pid);
+  if(pg) pg.classList.add('active');
+  const labels = { dashboard:'Tableau de bord', nouvelle:'Nouvelle mainlevée', dossiers:'Mes dossiers', transmis:'Transmis responsable', profil:'Mon profil' };
+  document.getElementById('breadcrumb').innerHTML = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 7L8 2l6 5v7h-4v-3H6v3H2V7Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg> Accueil <span class="tb-divider">›</span> <span class="tb-cur">${labels[pid]||pid}</span>`;
+}
+
+function toggleDeb(v) {
+  document.getElementById('deb-p').style.display = v==='p' ? 'grid' : 'none';
+  document.getElementById('deb-e').style.display = v==='e' ? 'grid' : 'none';
+}
+
+function toggleCredit(v) {
+  document.getElementById('cr-auto').style.display = v==='auto' ? 'grid' : 'none';
+  document.getElementById('cr-immo').style.display = v==='immo' ? 'grid' : 'none';
+}
+
+function stepNav(dir) {
+  const prev = currentStep;
+  currentStep = Math.max(1, Math.min(4, currentStep + dir));
+  document.getElementById('s'+prev).style.display = 'none';
+  document.getElementById('s'+currentStep).style.display = 'block';
+  document.querySelectorAll('.wstep').forEach(el => {
+    const s = +el.dataset.step;
+    el.className = 'wstep' + (s < currentStep ? ' done' : s === currentStep ? ' active' : '');
+    el.querySelector('.wnum').textContent = s < currentStep ? '✓' : s;
+  });
+  document.querySelectorAll('.wsep').forEach((el,i) => { el.className = 'wsep' + (i+2 <= currentStep ? ' done' : ''); });
+  document.getElementById('btn-prev').style.display = currentStep > 1 ? 'inline-flex' : 'none';
+  document.getElementById('btn-next').style.display = currentStep < 4 ? 'inline-flex' : 'none';
+  document.getElementById('btn-send').style.display = currentStep === 4 ? 'inline-flex' : 'none';
+}
+
+function sendDossier() {
+  toast('✓ Dossier transmis au Directeur Rachidi — notification envoyée', 'tok');
+  setTimeout(() => goPage(document.querySelector('[onclick*=transmis]'), 'transmis'), 1000);
+}
+
+function toast(msg, type='tinfo', dur=3800) {
+  const icons = { tok:'✓', terr:'✗', tinfo:'ℹ' };
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.innerHTML = `<span>${icons[type]||'ℹ'}</span><span style="flex:1">${msg}</span><button class="toast-close" onclick="this.parentElement.remove()">×</button>`;
+  document.getElementById('tc').appendChild(el);
+  setTimeout(() => { el.style.transition='all .3s'; el.style.opacity='0'; el.style.transform='translateY(5px)'; setTimeout(()=>el.remove(),300); }, dur);
+}
+
+function updateClock() {
+  const n = new Date();
+  const el = document.getElementById('clock');
+  if(el) el.textContent = n.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}) + ' · ' + n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+setInterval(updateClock, 1000); updateClock();
+stepNav(0);
+</script>
+</body>
+</html>
