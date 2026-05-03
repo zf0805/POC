@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLV·SECURE — Vérification publique</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,700&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1620;--ink2:#2A3A4E;--ink3:#6B7A8D;--paper:#F7F5F0;--paper2:#EDEAE3;--paper3:#E2DED5;--white:#fff;--accent:#0A5C3A;--accent2:#0D7A4E;--gold:#B8860B;--gold2:#D4A017;--emerald:#0A5C3A;--emerald2:#0D7A4E;--crimson:#9B1C1C;--crimson2:#C0392B;--amber:#92400E;--amber2:#B45309;--bd:rgba(14,22,32,.09);--bd2:rgba(14,22,32,.16);--bd3:rgba(14,22,32,.26);--r:8px;--rl:12px;--font:'DM Sans',sans-serif;--serif:'Fraunces',serif;--mono:'IBM Plex Mono',monospace;--sh:0 1px 3px rgba(14,22,32,.06),0 4px 14px rgba(14,22,32,.05);--shmd:0 6px 24px rgba(14,22,32,.10);--shlg:0 16px 52px rgba(14,22,32,.16);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;font-family:var(--font);background:var(--paper);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.layout{min-height:100vh;display:flex;flex-direction:column}
+/* TOP */
+.top{background:var(--ink);padding:0;border-bottom:1px solid rgba(255,255,255,.06)}
+.top-inner{max-width:1240px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;gap:18px}
+.top-logo{display:flex;align-items:center;gap:13px}
+.top-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(10,92,58,.45)}
+.top-name{font-family:var(--serif);font-size:18px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.top-sub{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px}
+.top-tagline{margin-left:auto;display:flex;align-items:center;gap:8px;padding:7px 14px;background:rgba(212,160,23,.14);border:1px solid rgba(212,160,23,.28);border-radius:8px;font-size:11px;font-weight:600;color:var(--gold2)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#4AE08A;animation:rp 2.4s infinite}
+@keyframes rp{0%,100%{opacity:1}50%{opacity:.4}}
+/* HERO */
+.hero{background:linear-gradient(180deg,var(--ink) 0%,#152840 100%);padding:36px 32px 28px;color:#fff;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(212,160,23,.08),transparent 60%);pointer-events:none}
+.hero-inner{max-width:1240px;margin:0 auto;position:relative}
+.hero h1{font-family:var(--serif);font-size:32px;font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:8px}
+.hero h1 em{color:var(--gold2);font-style:italic}
+.hero p{font-size:14px;color:rgba(255,255,255,.65);max-width:680px;line-height:1.6}
+/* ROLE SELECTOR */
+.role-bar{background:var(--white);border-bottom:1.5px solid var(--bd);position:sticky;top:0;z-index:50;box-shadow:0 1px 0 var(--bd)}
+.role-inner{max-width:1240px;margin:0 auto;padding:0 32px;display:flex;gap:0;overflow-x:auto}
+.role-tab{padding:14px 18px;font-family:var(--font);font-size:12.5px;font-weight:600;color:var(--ink3);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px;transition:all .14s;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.role-tab:hover{color:var(--ink)}
+.role-tab.active{color:var(--accent);border-bottom-color:var(--accent2)}
+.role-tab-ic{font-size:15px}
+/* MAIN */
+.main{flex:1;max-width:1240px;width:100%;margin:0 auto;padding:32px;display:grid;grid-template-columns:380px 1fr;gap:24px}
+@media(max-width:1024px){.main{grid-template-columns:1fr}}
+.left-col{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--white);border:1px solid var(--bd);border-radius:var(--rl);box-shadow:var(--sh);overflow:hidden}
+.card-h{padding:16px 22px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px}
+.card-h h3{font-family:var(--serif);font-size:14.5px;font-weight:600;color:var(--ink);flex:1}
+.card-b{padding:22px}
+/* SEARCH FORM */
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:13px}
+.fg label{font-size:10.5px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.6px}
+.input{width:100%;padding:11px 13px;border:1.5px solid var(--bd2);border-radius:var(--r);font-family:var(--font);font-size:14px;color:var(--ink);background:var(--white);outline:none;transition:all .14s}
+.input:focus{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(13,122,78,.12)}
+.input.mono{font-family:var(--mono);letter-spacing:.5px;font-size:14px}
+.input-big{font-size:17px;padding:13px 14px;font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:var(--r);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .14s;width:100%}
+.btn:active{transform:scale(.98)}
+.btn-emerald{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-weight:700;box-shadow:0 3px 14px rgba(10,92,58,.32)}
+.btn-emerald:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 5px 20px rgba(10,92,58,.4)}
+.btn-ghost{background:transparent;color:var(--ink2);border-color:var(--bd2);width:auto}
+.btn-ghost:hover{background:var(--paper2)}
+.btn-sm{padding:7px 14px;font-size:12px;width:auto}
+/* QR ZONE */
+.qr-zone{border:2px dashed var(--bd3);border-radius:var(--rl);padding:30px 20px;text-align:center;cursor:pointer;transition:all .15s;background:var(--paper)}
+.qr-zone:hover{border-color:var(--accent2);background:#F0FBF6}
+.qr-icon{font-size:38px;margin-bottom:8px}
+.qr-title{font-size:13px;font-weight:600;color:var(--ink2)}
+.qr-sub{font-size:11.5px;color:var(--ink3);margin-top:4px}
+.divider-or{display:flex;align-items:center;gap:12px;margin:14px 0;color:var(--ink3);font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
+.divider-or::before,.divider-or::after{content:'';flex:1;height:1px;background:var(--bd2)}
+/* HISTORY */
+.hist-row{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.hist-row:last-child{border-bottom:none;padding-bottom:0}
+.hist-row:first-child{padding-top:0}
+.hist-ic{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;font-weight:700}
+.hist-info{flex:1;min-width:0}
+.hist-ref{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink)}
+.hist-meta{font-size:10.5px;color:var(--ink3);margin-top:1px}
+/* RESULT */
+.result-panel{min-height:400px;display:flex;flex-direction:column}
+.result-empty{padding:60px 30px;text-align:center}
+.empty-circle{width:96px;height:96px;border-radius:50%;background:var(--paper2);border:3px solid var(--bd2);margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:38px;color:var(--ink3)}
+.empty-title{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink2);margin-bottom:6px}
+.empty-sub{font-size:13px;color:var(--ink3);max-width:320px;margin:0 auto;line-height:1.6}
+.result-loading{padding:60px 30px;text-align:center}
+.spinner{width:40px;height:40px;border:3px solid var(--bd2);border-top-color:var(--accent2);border-radius:50%;margin:0 auto 18px;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.result-ok,.result-err{animation:rIn .3s ease}
+@keyframes rIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.result-banner{padding:24px 28px;display:flex;align-items:center;gap:18px;border-bottom:1px solid var(--bd)}
+.result-ok .result-banner{background:linear-gradient(135deg,#E8F8F1,#D6F3E5)}
+.result-err .result-banner{background:linear-gradient(135deg,#FDF1F1,#FBE6E6)}
+.banner-circle{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;border:3px solid currentColor}
+.result-ok .banner-circle{background:#fff;color:var(--emerald2)}
+.result-err .banner-circle{background:#fff;color:var(--crimson2)}
+.banner-title{font-family:var(--serif);font-size:22px;font-weight:700;line-height:1.2}
+.result-ok .banner-title{color:var(--emerald)}
+.result-err .banner-title{color:var(--crimson)}
+.banner-sub{font-size:13px;color:var(--ink2);margin-top:3px}
+.result-body{padding:26px 28px}
+.alert{display:flex;gap:10px;padding:13px 16px;border-radius:var(--r);font-size:13px;line-height:1.6;margin-bottom:20px}
+.alOk{background:#E8F8F1;color:var(--emerald);border:1px solid rgba(10,92,58,.18)}
+.alErr{background:#FDF1F1;color:var(--crimson);border:1px solid rgba(155,28,28,.18)}
+.alI{background:#EEF3FF;color:#2952A3;border:1px solid rgba(41,82,163,.14)}
+.section-label{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.section-label::before{content:'';width:3px;height:14px;background:var(--gold);border-radius:2px}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 24px;margin-bottom:24px}
+.info-item{display:flex;flex-direction:column;gap:3px}
+.info-key{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.6px}
+.info-val{font-size:14px;color:var(--ink);font-weight:500}
+.info-val.mono{font-family:var(--mono);font-size:13px}
+.info-val.accent{color:var(--emerald);font-weight:700;font-family:var(--serif);font-size:16px}
+.action-row{display:flex;gap:10px;justify-content:flex-end;padding-top:18px;border-top:1px solid var(--bd)}
+.action-row .btn{width:auto}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.bOk{background:#E8F8F1;color:var(--emerald);border:1px solid rgba(10,92,58,.18)}
+.bErr{background:#FDF1F1;color:var(--crimson);border:1px solid rgba(155,28,28,.18)}
+.bdot{width:6px;height:6px;border-radius:50%;background:currentColor}
+/* QR DISPLAY */
+.qr-display{display:flex;align-items:center;gap:18px;padding:18px;background:var(--paper);border-radius:var(--r);border:1px solid var(--bd);margin-bottom:20px}
+.qr-img{width:90px;height:90px;background:#fff;border:1px solid var(--bd);border-radius:6px;flex-shrink:0;padding:6px;display:flex;align-items:center;justify-content:center}
+.qr-img svg{width:100%;height:100%}
+.qr-info-title{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--ink);letter-spacing:.5px;margin-bottom:5px}
+.qr-info-meta{font-size:12px;color:var(--ink3);line-height:1.6}
+/* ROLE-SPECIFIC ACTIONS */
+.role-actions{padding:14px 18px;background:var(--paper2);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:18px}
+.role-actions-title{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.role-actions-list{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink2)}
+.role-actions-list li{display:flex;align-items:center;gap:8px}
+.role-actions-list li::before{content:'→';color:var(--accent);font-weight:700}
+/* TOAST */
+.toast-wrap{position:fixed;bottom:22px;right:22px;z-index:9999;display:flex;flex-direction:column;gap:9px}
+.toast{display:flex;align-items:center;gap:9px;padding:12px 16px;background:#fff;border:1px solid var(--bd2);border-radius:var(--rl);box-shadow:var(--shlg);font-size:13px;max-width:340px;animation:tIn .2s ease;font-weight:500}
+.toast.tok{border-left:3.5px solid var(--emerald2)}.toast.terr{border-left:3.5px solid var(--crimson2)}.toast.tinfo{border-left:3.5px solid #2952A3}
+@keyframes tIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+.tc{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:16px;margin-left:auto}
+/* FOOTER */
+.footer{background:var(--ink);color:rgba(255,255,255,.5);padding:18px 32px;font-size:12px;border-top:1px solid rgba(255,255,255,.06)}
+.footer-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.footer-sep{opacity:.4}
+.footer-banks{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.bank-chip{padding:3px 9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:4px;font-size:10.5px;font-weight:500;color:rgba(255,255,255,.55)}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:var(--bd3);border-radius:10px}
+</style>
+</head>
+<body>
+<div class="toast-wrap" id="tw"></div>
+<div class="layout">
+
+<!-- TOP -->
+<div class="top">
+  <div class="top-inner">
+    <div class="top-logo">
+      <div class="top-icon">
+        <svg width="24" height="24" viewBox="0 0 22 22" fill="none">
+          <path d="M11 2L20 6V13C20 17.5 16 21 11 22C6 21 2 17.5 2 13V6Z" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.4)" stroke-width=".8"/>
+          <path d="M7 11l3 3 5-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div><div class="top-name">MLV·SECURE</div><div class="top-sub">Vérification publique</div></div>
+    </div>
+    <div class="top-tagline"><div class="live-dot"></div>Plateforme certifiée — TLS 1.3</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Vérifiez l'authenticité d'une <em>mainlevée bancaire</em></h1>
+    <p>Service public ouvert aux administrations, tribunaux, notaires, services des mines, forces de l'ordre et particuliers. Authentifiez instantanément un certificat de mainlevée par référence ou code QR.</p>
+  </div>
+</div>
+
+<!-- ROLE SELECTOR -->
+<div class="role-bar">
+  <div class="role-inner">
+    <button class="role-tab active" data-role="banque" onclick="selectRole(this)"><span class="role-tab-ic">🏦</span>Banque tierce</button>
+    <button class="role-tab" data-role="tribunal" onclick="selectRole(this)"><span class="role-tab-ic">⚖️</span>Tribunal</button>
+    <button class="role-tab" data-role="notaire" onclick="selectRole(this)"><span class="role-tab-ic">📜</span>Notaire</button>
+    <button class="role-tab" data-role="mines" onclick="selectRole(this)"><span class="role-tab-ic">🚗</span>Service des Mines</button>
+    <button class="role-tab" data-role="conservation" onclick="selectRole(this)"><span class="role-tab-ic">🏛️</span>Conservation foncière</button>
+    <button class="role-tab" data-role="douanes" onclick="selectRole(this)"><span class="role-tab-ic">🛂</span>Douanes</button>
+    <button class="role-tab" data-role="autre" onclick="selectRole(this)"><span class="role-tab-ic">👤</span>Autre / Particulier</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- LEFT -->
+  <div class="left-col">
+    <div class="card">
+      <div class="card-h">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none" style="color:var(--accent2)"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <h3>Saisir une référence</h3>
+      </div>
+      <div class="card-b">
+        <div class="fg"><label>Référence mainlevée</label><input class="input mono input-big" id="s-ref" placeholder="MLV-2025-XXXX" value="MLV-2025-0142"></div>
+        <div class="fg"><label>Ou CIN du débiteur</label><input class="input mono" id="s-cin" placeholder="AB123456"></div>
+        <div class="fg"><label>Ou nom du débiteur</label><input class="input" id="s-nom" placeholder="Mansouri"></div>
+        <div class="fg"><label>Ou immatriculation / Titre foncier</label><input class="input mono" id="s-immat" placeholder="1234 A 56"></div>
+        <button class="btn btn-emerald" onclick="doVerify()" style="margin-top:8px">🔍 Vérifier l'authenticité</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none" style="color:var(--accent2)"><rect x="2" y="2" width="5" height="5" rx=".5" stroke="currentColor" stroke-width="1.4"/><rect x="9" y="2" width="5" height="5" rx=".5" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="9" width="5" height="5" rx=".5" stroke="currentColor" stroke-width="1.4"/><path d="M9 9h2v2H9zM13 9v2M9 13h2M13 13v1" stroke="currentColor" stroke-width="1.4"/></svg>
+        <h3>Scanner un code QR</h3>
+      </div>
+      <div class="card-b">
+        <div class="qr-zone" onclick="toast('📷 Activation caméra (démonstration)','tinfo')">
+          <div class="qr-icon">📷</div>
+          <div class="qr-title">Scanner avec la caméra</div>
+          <div class="qr-sub">Pointez vers le QR imprimé sur le certificat</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>Vérifications récentes</h3></div>
+      <div class="card-b" style="padding:14px 22px">
+        <div class="hist-row"><div class="hist-ic" style="background:#E8F8F1;color:var(--emerald)">✓</div><div class="hist-info"><div class="hist-ref">MLV-2025-0140</div><div class="hist-meta">Auth. · 27/04 · 14:22</div></div></div>
+        <div class="hist-row"><div class="hist-ic" style="background:#E8F8F1;color:var(--emerald)">✓</div><div class="hist-info"><div class="hist-ref">MLV-2025-0138</div><div class="hist-meta">Auth. · 25/04 · 09:10</div></div></div>
+        <div class="hist-row"><div class="hist-ic" style="background:#FDF1F1;color:var(--crimson)">✗</div><div class="hist-info"><div class="hist-ref">REF-INCONNUE</div><div class="hist-meta">Refusée · 22/04 · 11:45</div></div></div>
+        <div class="hist-row"><div class="hist-ic" style="background:#E8F8F1;color:var(--emerald)">✓</div><div class="hist-info"><div class="hist-ref">MLV-2025-0125</div><div class="hist-meta">Auth. · 20/04 · 16:33</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="card">
+    <div class="card-h">
+      <svg width="17" height="17" viewBox="0 0 16 16" fill="none" style="color:var(--accent2)"><path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <h3>Résultat de la vérification</h3>
+      <span id="role-indicator" style="margin-left:auto;font-size:11px;font-weight:600;color:var(--ink3);padding:4px 10px;background:var(--paper2);border-radius:4px;border:1px solid var(--bd)">🏦 Banque tierce</span>
+    </div>
+    <div class="result-panel" id="result-panel">
+      <div class="result-empty" id="result-empty">
+        <div class="empty-circle">🔍</div>
+        <div class="empty-title">En attente de vérification</div>
+        <div class="empty-sub">Saisissez une référence, un CIN, un nom ou scannez un code QR pour vérifier l'authenticité d'une mainlevée bancaire.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-inner">
+    <span>MLV·SECURE © 2025</span>
+    <span class="footer-sep">·</span>
+    <span>Service de vérification publique</span>
+    <span class="footer-sep">·</span>
+    <span>Données chiffrées TLS 1.3</span>
+    <div class="footer-banks">
+      <span class="bank-chip">Attijariwafa</span>
+      <span class="bank-chip">CIH Bank</span>
+      <span class="bank-chip">Banque Populaire</span>
+      <span class="bank-chip">BMCE</span>
+      <span class="bank-chip">SG Maroc</span>
+      <span class="bank-chip">CDM</span>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const DB={
+  'MLV-2025-0142':{nom:'Karim Mansouri',cin:'AB123456',type:'Crédit automobile',montant:'125 000 MAD',date:'28/04/2025 · 15:20',valideur:'K. Amrani — Resp. Hay Hassani',banque:'Attijariwafa Bank',immat:'1234 A 56',tf:null,duree:'48 mois',dossier:'DOS-2024-00789'},
+  'MLV-2025-0140':{nom:'SARL Al Nour',cin:'RC-00789',type:'Crédit consommation',montant:'45 000 MAD',date:'27/04/2025 · 16:30',valideur:'K. Amrani',banque:'CIH Bank',immat:null,tf:null,duree:'24 mois',dossier:'DOS-2023-04521'},
+  'MLV-2025-0138':{nom:'SCI Palmier Verde',cin:'RC-01234',type:'Crédit immobilier',montant:'1 200 000 MAD',date:'24/04/2025 · 09:15',valideur:'K. Amrani',banque:'Banque Populaire',immat:null,tf:'TF-12345/C',duree:'180 mois',dossier:'DOS-2020-00123'}
+};
+const ALIAS={
+  'AB123456':'MLV-2025-0142','MANSOURI':'MLV-2025-0142','1234 A 56':'MLV-2025-0142','1234A56':'MLV-2025-0142',
+  'RC-00789':'MLV-2025-0140','AL NOUR':'MLV-2025-0140',
+  'RC-01234':'MLV-2025-0138','PALMIER':'MLV-2025-0138','TF-12345/C':'MLV-2025-0138','TF-12345':'MLV-2025-0138'
+};
+const ROLES={
+  banque:{label:'🏦 Banque tierce',hint:'En tant que banque tierce, vous pouvez vérifier qu\'aucun gage n\'est plus actif sur le bien.',actions:['Mettre à jour la centrale des risques','Lever l\'inscription de l\'hypothèque','Émettre un nouveau crédit garanti par le bien']},
+  tribunal:{label:'⚖️ Tribunal',hint:'En tant que tribunal, vous pouvez intégrer ce certificat à un dossier judiciaire en cours.',actions:['Joindre la pièce au dossier','Notifier les parties','Lever la saisie ou le séquestre éventuel']},
+  notaire:{label:'📜 Notaire',hint:'En tant que notaire, vous pouvez procéder à la rédaction d\'actes (vente, donation, succession).',actions:['Rédiger l\'acte de vente','Procéder à la radiation hypothécaire','Délivrer l\'attestation de mainlevée notariée']},
+  mines:{label:'🚗 Service des Mines',hint:'En tant que service des Mines, vous pouvez radier le gage automobile sur la carte grise.',actions:['Radier le gage sur la carte grise','Émettre un nouveau certificat d\'immatriculation','Lever la mention "véhicule gagé" du fichier national']},
+  conservation:{label:'🏛️ Conservation foncière',hint:'En tant que conservation foncière, vous pouvez radier l\'hypothèque inscrite au titre foncier.',actions:['Radier l\'hypothèque du titre foncier','Mettre à jour le registre foncier','Délivrer un certificat de propriété purgée']},
+  douanes:{label:'🛂 Douanes',hint:'En tant que service des douanes, vous pouvez vérifier la mainlevée pour les biens importés sous gage.',actions:['Lever la consignation douanière','Autoriser la cession à l\'étranger','Émettre un quitus douanier']},
+  autre:{label:'👤 Autre / Particulier',hint:'Vérifiez librement l\'authenticité d\'un certificat de mainlevée qui vous a été remis.',actions:['Confirmer l\'authenticité','Sauvegarder le résultat','Signaler une fraude éventuelle']}
+};
+let currentRole='banque';
+
+function selectRole(el){
+  document.querySelectorAll('.role-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  currentRole=el.dataset.role;
+  document.getElementById('role-indicator').textContent=ROLES[currentRole].label;
+}
+
+function resolveQuery(){
+  const ref=document.getElementById('s-ref').value.trim().toUpperCase();
+  const cin=document.getElementById('s-cin').value.trim().toUpperCase();
+  const nom=document.getElementById('s-nom').value.trim().toUpperCase();
+  const immat=document.getElementById('s-immat').value.trim().toUpperCase();
+  if(ref && DB[ref])return ref;
+  for(const v of [cin,nom,immat]){
+    if(v && ALIAS[v])return ALIAS[v];
+    for(const k in ALIAS){if(v && (k.includes(v)||v.includes(k)))return ALIAS[k];}
+  }
+  return ref||cin||nom||immat||null;
+}
+
+function doVerify(){
+  const q=resolveQuery();
+  if(!q){toast('Veuillez saisir une référence, un CIN, un nom ou une immatriculation','terr');return;}
+  const panel=document.getElementById('result-panel');
+  panel.innerHTML='<div class="result-loading"><div class="spinner"></div><div style="font-family:var(--serif);font-size:18px;color:var(--ink2);font-weight:600;margin-bottom:5px">Vérification en cours…</div><div style="font-size:12px;color:var(--ink3)">Interrogation de la base sécurisée</div></div>';
+  setTimeout(()=>{
+    const d=DB[q];
+    if(d){renderOk(q,d);}else{renderErr(q);}
+  },800);
+}
+
+function qrSvg(){
+  // small QR-like pattern (decorative)
+  return '<svg viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect width="33" height="33" fill="white"/><g fill="black"><rect x="0" y="0" width="7" height="7"/><rect x="1" y="1" width="5" height="5" fill="white"/><rect x="2" y="2" width="3" height="3"/><rect x="26" y="0" width="7" height="7"/><rect x="27" y="1" width="5" height="5" fill="white"/><rect x="28" y="2" width="3" height="3"/><rect x="0" y="26" width="7" height="7"/><rect x="1" y="27" width="5" height="5" fill="white"/><rect x="2" y="28" width="3" height="3"/><rect x="9" y="0" width="1" height="1"/><rect x="11" y="0" width="2" height="1"/><rect x="14" y="0" width="1" height="1"/><rect x="16" y="0" width="3" height="1"/><rect x="20" y="0" width="2" height="1"/><rect x="23" y="0" width="1" height="1"/><rect x="0" y="9" width="1" height="1"/><rect x="3" y="9" width="2" height="1"/><rect x="9" y="9" width="3" height="3"/><rect x="13" y="9" width="1" height="2"/><rect x="15" y="9" width="2" height="1"/><rect x="18" y="9" width="1" height="3"/><rect x="20" y="9" width="3" height="1"/><rect x="24" y="9" width="2" height="2"/><rect x="28" y="9" width="1" height="1"/><rect x="30" y="9" width="2" height="1"/><rect x="2" y="11" width="1" height="2"/><rect x="5" y="11" width="2" height="1"/><rect x="9" y="13" width="1" height="3"/><rect x="11" y="13" width="3" height="1"/><rect x="15" y="13" width="1" height="3"/><rect x="17" y="13" width="2" height="2"/><rect x="20" y="13" width="1" height="2"/><rect x="22" y="13" width="3" height="1"/><rect x="26" y="13" width="2" height="2"/><rect x="29" y="13" width="1" height="2"/><rect x="31" y="13" width="2" height="1"/><rect x="0" y="15" width="2" height="1"/><rect x="3" y="15" width="1" height="2"/><rect x="6" y="15" width="2" height="1"/><rect x="11" y="17" width="2" height="2"/><rect x="14" y="17" width="3" height="1"/><rect x="18" y="17" width="1" height="3"/><rect x="20" y="17" width="2" height="1"/><rect x="23" y="17" width="2" height="2"/><rect x="27" y="17" width="1" height="2"/><rect x="29" y="17" width="3" height="1"/><rect x="1" y="19" width="3" height="1"/><rect x="5" y="19" width="2" height="2"/><rect x="9" y="19" width="2" height="2"/><rect x="13" y="19" width="1" height="3"/><rect x="15" y="19" width="2" height="1"/><rect x="20" y="19" width="1" height="3"/><rect x="22" y="19" width="2" height="1"/><rect x="26" y="21" width="1" height="2"/><rect x="28" y="21" width="2" height="1"/><rect x="31" y="21" width="2" height="2"/><rect x="2" y="22" width="2" height="1"/><rect x="6" y="22" width="1" height="2"/><rect x="9" y="23" width="1" height="3"/><rect x="11" y="23" width="3" height="2"/><rect x="15" y="23" width="1" height="2"/><rect x="17" y="23" width="2" height="2"/><rect x="22" y="24" width="2" height="2"/><rect x="29" y="25" width="1" height="3"/><rect x="9" y="29" width="1" height="2"/><rect x="11" y="29" width="2" height="1"/><rect x="14" y="29" width="3" height="2"/><rect x="18" y="29" width="2" height="1"/><rect x="21" y="29" width="2" height="2"/><rect x="25" y="29" width="2" height="1"/><rect x="29" y="29" width="1" height="3"/><rect x="32" y="29" width="1" height="2"/></g></svg>';
+}
+
+function renderOk(ref,d){
+  const role=ROLES[currentRole];
+  const panel=document.getElementById('result-panel');
+  panel.innerHTML='<div class="result-ok">'
+    +'<div class="result-banner">'
+      +'<div class="banner-circle">✓</div>'
+      +'<div><div class="banner-title">Document authentique</div><div class="banner-sub">Correspondance confirmée dans la base sécurisée — '+d.banque+'</div></div>'
+    +'</div>'
+    +'<div class="result-body">'
+      +'<div class="alert alOk">✓ <strong>Ce document est valide et peut être accepté.</strong> '+role.hint+'</div>'
+      +'<div class="qr-display">'
+        +'<div class="qr-img">'+qrSvg()+'</div>'
+        +'<div><div class="qr-info-title">'+ref+'</div><div class="qr-info-meta">QR sécurisé · SHA-256 horodaté<br>Émis le '+d.date+'<br>Hash : <span style="font-family:var(--mono)">a3f2c891…d4e7</span></div></div>'
+        +'<div style="margin-left:auto"><span class="badge bOk"><span class="bdot"></span>Validée</span></div>'
+      +'</div>'
+      +'<div class="section-label">Informations vérifiées</div>'
+      +'<div class="info-grid">'
+        +'<div class="info-item"><div class="info-key">Référence MLV</div><div class="info-val mono">'+ref+'</div></div>'
+        +'<div class="info-item"><div class="info-key">Statut</div><div class="info-val"><span class="badge bOk"><span class="bdot"></span>Mainlevée validée</span></div></div>'
+        +'<div class="info-item"><div class="info-key">Débiteur</div><div class="info-val">'+d.nom+'</div></div>'
+        +'<div class="info-item"><div class="info-key">CIN / RC</div><div class="info-val mono">'+d.cin+'</div></div>'
+        +'<div class="info-item"><div class="info-key">Nature du crédit</div><div class="info-val">'+d.type+'</div></div>'
+        +'<div class="info-item"><div class="info-key">Montant total</div><div class="info-val accent">'+d.montant+'</div></div>'
+        +'<div class="info-item"><div class="info-key">Date de validation</div><div class="info-val">'+d.date+'</div></div>'
+        +'<div class="info-item"><div class="info-key">Validé par</div><div class="info-val">'+d.valideur+'</div></div>'
+        +'<div class="info-item"><div class="info-key">Banque émettrice</div><div class="info-val">'+d.banque+'</div></div>'
+        +'<div class="info-item"><div class="info-key">Réf. dossier crédit</div><div class="info-val mono">'+d.dossier+'</div></div>'
+        +(d.immat?'<div class="info-item"><div class="info-key">Immatriculation</div><div class="info-val mono">'+d.immat+'</div></div>':'')
+        +(d.tf?'<div class="info-item"><div class="info-key">Titre foncier</div><div class="info-val mono">'+d.tf+'</div></div>':'')
+      +'</div>'
+      +'<div class="role-actions">'
+        +'<div class="role-actions-title">Actions disponibles pour votre rôle ('+role.label+')</div>'
+        +'<ul class="role-actions-list">'+role.actions.map(a=>'<li>'+a+'</li>').join('')+'</ul>'
+      +'</div>'
+      +'<div class="action-row">'
+        +'<button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Imprimer</button>'
+        +'<button class="btn btn-ghost btn-sm" onclick="toast(\'Résultat archivé dans votre historique\',\'tok\')">📁 Archiver</button>'
+        +'<button class="btn btn-emerald btn-sm" style="width:auto" onclick="toast(\'✓ Marqué comme vérifié\',\'tok\')">✓ Valider la pièce</button>'
+      +'</div>'
+    +'</div></div>';
+  toast('✓ '+ref+' authentique — '+d.banque,'tok');
+}
+
+function renderErr(q){
+  const panel=document.getElementById('result-panel');
+  panel.innerHTML='<div class="result-err">'
+    +'<div class="result-banner">'
+      +'<div class="banner-circle">✗</div>'
+      +'<div><div class="banner-title">Document non authentifié</div><div class="banner-sub">Aucune correspondance trouvée dans la base sécurisée</div></div>'
+    +'</div>'
+    +'<div class="result-body">'
+      +'<div class="alert alErr">'
+        +'<div><div style="font-weight:700;margin-bottom:8px">✗ Ce document doit être refusé</div>'
+        +'<div style="font-size:12.5px;line-height:1.7">Actions recommandées :<br>'
+        +'<strong>1.</strong> Ne pas accepter ce document pour la démarche en cours<br>'
+        +'<strong>2.</strong> Informer le porteur du refus de la pièce<br>'
+        +'<strong>3.</strong> Demander au débiteur de contacter sa <strong>banque créancière</strong><br>'
+        +'<strong>4.</strong> La banque devra émettre une attestation officielle valide</div></div>'
+      +'</div>'
+      +'<div class="section-label">Détails de la recherche</div>'
+      +'<div class="info-grid" style="grid-template-columns:1fr 1fr 1fr">'
+        +'<div class="info-item"><div class="info-key">Saisie</div><div class="info-val mono">'+q+'</div></div>'
+        +'<div class="info-item"><div class="info-key">Date</div><div class="info-val">'+new Date().toLocaleDateString('fr-FR')+'</div></div>'
+        +'<div class="info-item"><div class="info-key">Heure</div><div class="info-val">'+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+'</div></div>'
+      +'</div>'
+      +'<div class="action-row">'
+        +'<button class="btn btn-ghost btn-sm" onclick="document.getElementById(\'s-ref\').focus()">↻ Nouvelle recherche</button>'
+        +'<button class="btn btn-ghost btn-sm" onclick="toast(\'Signalement transmis à la cellule fraude\',\'tok\')">⚠ Signaler une fraude</button>'
+      +'</div>'
+    +'</div></div>';
+  toast('✗ Référence '+q+' — Non trouvée','terr');
+}
+
+function toast(msg,type,dur){type=type||'tinfo';dur=dur||4500;const ic={tok:'✓',terr:'✗',tinfo:'ℹ'};const el=document.createElement('div');el.className='toast '+type;el.innerHTML='<span>'+ic[type]+'</span><span style="flex:1">'+msg+'</span><button class="tc" onclick="this.parentElement.remove()">×</button>';document.getElementById('tw').appendChild(el);setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(10px)';el.style.transition='all .28s';setTimeout(()=>el.remove(),300);},dur);}
+
+document.getElementById('s-ref').addEventListener('keydown',e=>{if(e.key==='Enter')doVerify();});
+document.getElementById('s-cin').addEventListener('keydown',e=>{if(e.key==='Enter')doVerify();});
+document.getElementById('s-nom').addEventListener('keydown',e=>{if(e.key==='Enter')doVerify();});
+document.getElementById('s-immat').addEventListener('keydown',e=>{if(e.key==='Enter')doVerify();});
+</script>
+</body>
+</html>
