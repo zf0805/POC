@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLV·SECURE — Documentation & Présentations</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,700&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1620;--ink2:#2A3A4E;--ink3:#6B7A8D;--paper:#F7F5F0;--paper2:#EDEAE3;--white:#fff;--accent:#1B3F7A;--accent2:#2952A3;--gold:#B8860B;--gold2:#D4A017;--emerald:#0A5C3A;--emerald2:#0D7A4E;--crimson:#9B1C1C;--bd:rgba(14,22,32,.09);--bd2:rgba(14,22,32,.16);--font:'DM Sans',sans-serif;--serif:'Fraunces',serif;--mono:'IBM Plex Mono',monospace;--sh:0 1px 3px rgba(14,22,32,.06),0 4px 14px rgba(14,22,32,.05);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:var(--font);background:var(--paper);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100%}
+.header{background:var(--ink);border-bottom:1px solid rgba(255,255,255,.06)}
+.header-inner{max-width:1280px;margin:0 auto;padding:24px 36px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.hb-logo{display:flex;align-items:center;gap:14px}
+.hb-icon{width:46px;height:46px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 16px rgba(27,63,122,.5)}
+.hb-name{font-family:var(--serif);font-size:22px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.hb-sub{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:3px}
+.hb-bar{margin-top:7px;width:42px;height:2.5px;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px}
+.hb-links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.app-link{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;transition:all .15s;border:1.5px solid transparent;cursor:pointer}
+.al-cc{background:rgba(41,82,163,.18);color:#7FB3FF;border-color:rgba(41,82,163,.3)}
+.al-cc:hover{background:rgba(41,82,163,.32);color:#fff;transform:translateY(-1px)}
+.al-rsp{background:rgba(212,160,23,.16);color:var(--gold2);border-color:rgba(212,160,23,.3)}
+.al-rsp:hover{background:rgba(212,160,23,.3);color:#fff;transform:translateY(-1px)}
+.al-pub{background:rgba(13,122,78,.18);color:#5AE3A5;border-color:rgba(13,122,78,.3)}
+.al-pub:hover{background:rgba(13,122,78,.32);color:#fff;transform:translateY(-1px)}
+.tabs-bar{background:var(--white);border-bottom:1.5px solid var(--bd);position:sticky;top:0;z-index:50;box-shadow:0 1px 0 var(--bd)}
+.tabs-inner{max-width:1280px;margin:0 auto;padding:0 36px;display:flex;gap:0;overflow-x:auto}
+.tab-btn{padding:14px 18px;font-family:var(--font);font-size:12.5px;font-weight:600;color:var(--ink3);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px;transition:all .14s;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{color:var(--ink);border-bottom-color:var(--gold)}
+.main{max-width:1280px;margin:0 auto;padding:34px 36px}
+.panel{display:none}
+.panel.active{display:block;animation:fu .22s ease}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.pt{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.4px;margin-bottom:6px}
+.ps{font-size:13.5px;color:var(--ink2);margin-bottom:30px;line-height:1.6;max-width:780px}
+.card{background:var(--white);border:1px solid var(--bd);border-radius:12px;box-shadow:var(--sh);overflow:hidden}
+.card-h{padding:16px 22px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px}
+.card-h h3{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);flex:1}
+.card-b{padding:24px}
+/* APP LAUNCH */
+.launch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px}
+@media(max-width:900px){.launch-grid{grid-template-columns:1fr}}
+.launch{background:var(--ink);border-radius:14px;padding:24px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.07);transition:all .2s;cursor:pointer;text-decoration:none;display:block;color:#fff}
+.launch:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(0,0,0,.32)}
+.launch::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;opacity:.18}
+.l-cc::before{background:radial-gradient(circle,#2D6AFF,transparent 70%)}
+.l-rsp::before{background:radial-gradient(circle,var(--gold2),transparent 70%)}
+.l-pub::before{background:radial-gradient(circle,var(--emerald2),transparent 70%)}
+.l-role{font-size:9.5px;letter-spacing:1.8px;text-transform:uppercase;font-weight:700;margin-bottom:14px;padding:4px 10px;border-radius:5px;display:inline-block}
+.l-cc .l-role{background:rgba(45,106,255,.22);color:#7FB3FF}
+.l-rsp .l-role{background:rgba(212,160,23,.2);color:var(--gold2)}
+.l-pub .l-role{background:rgba(13,122,78,.2);color:#5AE3A5}
+.l-title{font-family:var(--serif);font-size:19px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.2}
+.l-desc{font-size:12.5px;color:rgba(255,255,255,.42);margin-bottom:18px;line-height:1.6}
+.l-creds{background:rgba(255,255,255,.05);border-radius:8px;padding:11px 13px;border:1px solid rgba(255,255,255,.07);margin-bottom:14px}
+.l-cred-row{display:flex;align-items:center;gap:8px;padding:3px 0}
+.l-cred-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.32);min-width:74px}
+.l-cred-val{font-family:var(--mono);font-size:11.5px;color:rgba(255,255,255,.72)}
+.l-btn{display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700;border:none;cursor:pointer;width:100%;justify-content:center;transition:all .15s}
+.l-cc .l-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 2px 12px rgba(41,82,163,.4)}
+.l-rsp .l-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--ink);box-shadow:0 2px 12px rgba(212,160,23,.4)}
+.l-pub .l-btn{background:linear-gradient(135deg,var(--emerald),var(--emerald2));color:#fff;box-shadow:0 2px 12px rgba(13,122,78,.4)}
+.l-btn:hover{filter:brightness(1.07);transform:translateY(-1px)}
+/* MERMAID + XMIND */
+.diag-wrap{background:var(--white);border:1px solid var(--bd);border-radius:12px;padding:30px;overflow-x:auto;box-shadow:var(--sh);margin-bottom:24px}
+.diag-wrap svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.diag-toolbar{display:flex;align-items:center;gap:10px;padding:12px 22px;border-bottom:1px solid var(--bd);background:var(--paper2)}
+.diag-title{font-family:var(--serif);font-size:14px;font-weight:600;flex:1}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:6px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd2);background:var(--white);color:var(--ink2);transition:all .14s;text-decoration:none}
+.btn:hover{background:var(--paper2);border-color:rgba(14,22,32,.26)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent2);color:#fff}
+/* CREDS TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{font-size:10px;font-weight:700;color:var(--ink3);letter-spacing:.8px;text-transform:uppercase;padding:10px 18px;text-align:left;border-bottom:1px solid var(--bd);background:var(--paper)}
+tbody tr{border-bottom:1px solid var(--bd)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover td{background:var(--paper)}
+td{padding:11px 18px;vertical-align:middle}
+.mono{font-family:var(--mono);font-size:11.5px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700}
+.bk{background:#E8F8F1;color:var(--emerald);border:1px solid rgba(10,92,58,.18)}
+.bp{background:#EEF3FF;color:var(--accent2);border:1px solid rgba(41,82,163,.18)}
+.bg{background:#FEF3E2;color:var(--gold);border:1px solid rgba(184,134,11,.2)}
+.bt{background:#E8F8F1;color:var(--emerald);border:1px solid rgba(10,92,58,.18)}
+/* PROCESS */
+.proc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
+@media(max-width:900px){.proc-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.proc-grid{grid-template-columns:1fr}}
+.proc-col{border-radius:11px;overflow:hidden;border:1px solid var(--bd);background:var(--white);box-shadow:var(--sh)}
+.proc-head{padding:13px 16px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.p1 .proc-head{background:#EEEDFE;color:#26215C}
+.p2 .proc-head{background:#FEF3E2;color:#633806}
+.p3 .proc-head{background:#E8F8F1;color:#085041}
+.p4 .proc-head{background:#EEF3FF;color:#042C53}
+.p5 .proc-head{background:var(--paper2);color:var(--ink2)}
+.proc-body{padding:14px 16px}
+.proc-item{font-size:12px;color:var(--ink2);padding:6px 0;border-bottom:1px solid var(--bd);line-height:1.55}
+.proc-item:last-child{border-bottom:none}
+.proc-item strong{color:var(--ink)}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:rgba(14,22,32,.26);border-radius:10px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="hb-logo">
+      <div class="hb-icon">
+        <svg width="26" height="26" viewBox="0 0 22 22" fill="none">
+          <path d="M11 2L20 6V13C20 17.5 16 21 11 22C6 21 2 17.5 2 13V6Z" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.4)" stroke-width=".8"/>
+          <rect x="7.5" y="13" width="7" height="6" rx="1.8" fill="white" opacity=".95"/>
+          <path d="M9.5 13V10.5C9.5 8.5 12.5 8.5 12.5 10.5V13" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <div>
+        <div class="hb-name">MLV·SECURE</div>
+        <div class="hb-sub">Documentation · Workflows · Présentations</div>
+        <div class="hb-bar"></div>
+      </div>
+    </div>
+    <div class="hb-links">
+      <a class="app-link al-cc" href="vue1-charge-credit.html" target="_blank">✍️ Chargé crédit</a>
+      <a class="app-link al-rsp" href="vue2-responsable.html" target="_blank">✅ Responsable</a>
+      <a class="app-link al-pub" href="vue3-verification-publique.html" target="_blank">🔍 Vérification publique</a>
+    </div>
+  </div>
+</div>
+
+<div class="tabs-bar">
+  <div class="tabs-inner">
+    <button class="tab-btn active" onclick="showTab('apps',this)">🚀 Applications</button>
+    <button class="tab-btn" onclick="showTab('mm-vue1',this)">📊 Workflow Vue 1</button>
+    <button class="tab-btn" onclick="showTab('mm-vue2',this)">📊 Workflow Vue 2</button>
+    <button class="tab-btn" onclick="showTab('mm-vue3',this)">📊 Workflow Vue 3</button>
+    <button class="tab-btn" onclick="showTab('mm-global',this)">📊 Workflow Global</button>
+    <button class="tab-btn" onclick="showTab('xmind',this)">🗺️ Carte mentale</button>
+    <button class="tab-btn" onclick="showTab('processus',this)">📋 Processus détaillé</button>
+    <button class="tab-btn" onclick="showTab('creds',this)">🔑 Identifiants</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- APPS -->
+<div class="panel active" id="tab-apps">
+  <div class="pt">Ouvrir les applications</div>
+  <p class="ps">Trois interfaces distinctes selon le rôle. Cliquez pour ouvrir l'application dans un nouvel onglet. Identifiants de démonstration intégrés.</p>
+  <div class="launch-grid">
+    <a class="launch l-cc" href="vue1-charge-credit.html" target="_blank">
+      <div class="l-role">✍️ Interface 1</div>
+      <div class="l-title">Chargé de crédit</div>
+      <div class="l-desc">Initiateur bancaire — saisie du dossier en 4 étapes, dépôt des justificatifs, transmission au responsable, suivi de l'historique.</div>
+      <div class="l-creds">
+        <div class="l-cred-row"><span class="l-cred-lbl">Identifiant</span><span class="l-cred-val">ahmed.bensalem</span></div>
+        <div class="l-cred-row"><span class="l-cred-lbl">Mot de passe</span><span class="l-cred-val">12345678</span></div>
+        <div class="l-cred-row"><span class="l-cred-lbl">Matricule</span><span class="l-cred-val">CC-001</span></div>
+      </div>
+      <button class="l-btn">Ouvrir l'application →</button>
+    </a>
+    <a class="launch l-rsp" href="vue2-responsable.html" target="_blank">
+      <div class="l-role">✅ Interface 2</div>
+      <div class="l-title">Responsable bancaire</div>
+      <div class="l-desc">Recherche multicritère (CIN, nom, référence, immatriculation), consultation du dossier en lecture seule, validation ou rejet motivé.</div>
+      <div class="l-creds">
+        <div class="l-cred-row"><span class="l-cred-lbl">Identifiant</span><span class="l-cred-val">k.amrani</span></div>
+        <div class="l-cred-row"><span class="l-cred-lbl">Mot de passe</span><span class="l-cred-val">resp2025</span></div>
+        <div class="l-cred-row"><span class="l-cred-lbl">Matricule</span><span class="l-cred-val">RSP-044</span></div>
+      </div>
+      <button class="l-btn">Ouvrir l'application →</button>
+    </a>
+    <a class="launch l-pub" href="vue3-verification-publique.html" target="_blank">
+      <div class="l-role">🔍 Interface 3</div>
+      <div class="l-title">Vérification publique</div>
+      <div class="l-desc">Portail multi-acteurs : banques, tribunaux, notaires, services des Mines, conservation foncière, douanes, particuliers. QR code ou référence.</div>
+      <div class="l-creds">
+        <div class="l-cred-row"><span class="l-cred-lbl">Accès</span><span class="l-cred-val">Public — sans login</span></div>
+        <div class="l-cred-row"><span class="l-cred-lbl">7 rôles</span><span class="l-cred-val">Sélection en haut</span></div>
+        <div class="l-cred-row"><span class="l-cred-lbl">QR ou réf.</span><span class="l-cred-val">2 méthodes</span></div>
+      </div>
+      <button class="l-btn">Ouvrir l'application →</button>
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><h3>Références de test pour la vérification</h3></div>
+    <div class="card-b">
+      <p style="font-size:13px;color:var(--ink2);margin-bottom:14px;line-height:1.6">Utilisez ces critères dans la Vue 3 pour tester la vérification d'authenticité :</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px">
+        <span style="font-family:var(--mono);font-size:12px;background:#E8F8F1;color:var(--emerald);padding:7px 13px;border-radius:8px;border:1px solid rgba(10,92,58,.18);font-weight:600">MLV-2025-0142 ✓</span>
+        <span style="font-family:var(--mono);font-size:12px;background:#E8F8F1;color:var(--emerald);padding:7px 13px;border-radius:8px;border:1px solid rgba(10,92,58,.18);font-weight:600">MLV-2025-0140 ✓</span>
+        <span style="font-family:var(--mono);font-size:12px;background:#E8F8F1;color:var(--emerald);padding:7px 13px;border-radius:8px;border:1px solid rgba(10,92,58,.18);font-weight:600">MLV-2025-0138 ✓</span>
+        <span style="font-family:var(--mono);font-size:12px;background:#E8F8F1;color:var(--emerald);padding:7px 13px;border-radius:8px;border:1px solid rgba(10,92,58,.18);font-weight:600">AB123456 (CIN) ✓</span>
+        <span style="font-family:var(--mono);font-size:12px;background:#E8F8F1;color:var(--emerald);padding:7px 13px;border-radius:8px;border:1px solid rgba(10,92,58,.18);font-weight:600">Mansouri (nom) ✓</span>
+        <span style="font-family:var(--mono);font-size:12px;background:#E8F8F1;color:var(--emerald);padding:7px 13px;border-radius:8px;border:1px solid rgba(10,92,58,.18);font-weight:600">1234 A 56 ✓</span>
+        <span style="font-family:var(--mono);font-size:12px;background:#FDF1F1;color:var(--crimson);padding:7px 13px;border-radius:8px;border:1px solid rgba(155,28,28,.18);font-weight:600">REF-INCONNUE ✗</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MERMAID VUE 1 -->
+<div class="panel" id="tab-mm-vue1">
+  <div class="pt">Workflow — Vue 1 · Chargé de crédit</div>
+  <p class="ps">Processus complet de saisie et transmission d'une mainlevée par l'initiateur bancaire.</p>
+  <div class="card">
+    <div class="diag-toolbar">
+      <span class="diag-title">flowchart-vue1.mmd</span>
+      <button class="btn" onclick="downloadMMD('vue1')">⬇ Télécharger .mmd</button>
+      <button class="btn" onclick="downloadSVG('mmd-vue1')">⬇ Exporter SVG</button>
+    </div>
+    <div class="diag-wrap"><div id="mmd-vue1"></div></div>
+  </div>
+</div>
+
+<!-- MERMAID VUE 2 -->
+<div class="panel" id="tab-mm-vue2">
+  <div class="pt">Workflow — Vue 2 · Responsable bancaire</div>
+  <p class="ps">Processus de recherche multicritère, consultation lecture seule et prise de décision (validation/rejet).</p>
+  <div class="card">
+    <div class="diag-toolbar">
+      <span class="diag-title">flowchart-vue2.mmd</span>
+      <button class="btn" onclick="downloadMMD('vue2')">⬇ Télécharger .mmd</button>
+      <button class="btn" onclick="downloadSVG('mmd-vue2')">⬇ Exporter SVG</button>
+    </div>
+    <div class="diag-wrap"><div id="mmd-vue2"></div></div>
+  </div>
+</div>
+
+<!-- MERMAID VUE 3 -->
+<div class="panel" id="tab-mm-vue3">
+  <div class="pt">Workflow — Vue 3 · Vérification publique</div>
+  <p class="ps">Processus de vérification ouvert aux 7 rôles partenaires (banque, tribunal, notaire, mines, conservation foncière, douanes, particulier).</p>
+  <div class="card">
+    <div class="diag-toolbar">
+      <span class="diag-title">flowchart-vue3.mmd</span>
+      <button class="btn" onclick="downloadMMD('vue3')">⬇ Télécharger .mmd</button>
+      <button class="btn" onclick="downloadSVG('mmd-vue3')">⬇ Exporter SVG</button>
+    </div>
+    <div class="diag-wrap"><div id="mmd-vue3"></div></div>
+  </div>
+</div>
+
+<!-- MERMAID GLOBAL -->
+<div class="panel" id="tab-mm-global">
+  <div class="pt">Workflow global — Cycle complet</div>
+  <p class="ps">Vue d'ensemble du cycle de vie d'une mainlevée bancaire — du remboursement intégral à la vérification par les administrations partenaires.</p>
+  <div class="card">
+    <div class="diag-toolbar">
+      <span class="diag-title">flowchart-global.mmd</span>
+      <button class="btn" onclick="downloadMMD('global')">⬇ Télécharger .mmd</button>
+      <button class="btn" onclick="downloadSVG('mmd-global')">⬇ Exporter SVG</button>
+    </div>
+    <div class="diag-wrap"><div id="mmd-global"></div></div>
+  </div>
+</div>
+
+<!-- XMIND -->
+<div class="panel" id="tab-xmind">
+  <div class="pt">Carte mentale — Architecture MLV·SECURE</div>
+  <p class="ps">Vue conceptuelle complète de la plateforme — acteurs, processus, sécurité et intégrations.</p>
+  <div class="card">
+    <div class="diag-toolbar">
+      <span class="diag-title">mindmap-mlv-secure.svg</span>
+      <button class="btn" onclick="downloadSVG('xmind-svg')">⬇ Exporter SVG</button>
+    </div>
+    <div class="diag-wrap">
+<svg id="xmind-svg" viewBox="0 0 1100 820" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif">
+  <defs>
+    <marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/></marker>
+  </defs>
+  <!-- CENTER -->
+  <rect x="430" y="380" width="240" height="60" rx="14" fill="#0E1620" stroke="#D4A017" stroke-width="2"/>
+  <text x="550" y="406" text-anchor="middle" fill="#fff" font-family="Fraunces, serif" font-size="18" font-weight="700">MLV·SECURE</text>
+  <text x="550" y="424" text-anchor="middle" fill="#D4A017" font-size="10" font-weight="600" letter-spacing="2">PLATEFORME MAINLEVÉE</text>
+
+  <!-- ACTEURS - LEFT TOP -->
+  <path d="M430 395 Q280 320 200 200" stroke="#1B3F7A" stroke-width="2" fill="none"/>
+  <rect x="80" y="170" width="240" height="44" rx="10" fill="#EEF3FF" stroke="#1B3F7A" stroke-width="1.5"/>
+  <text x="200" y="188" text-anchor="middle" fill="#0E1620" font-size="13" font-weight="700">👥 ACTEURS</text>
+  <text x="200" y="204" text-anchor="middle" fill="#2952A3" font-size="10.5">9 rôles distincts</text>
+
+  <line x1="200" y1="214" x2="120" y2="250" stroke="#534AB7" stroke-width="1"/>
+  <rect x="20" y="245" width="180" height="32" rx="7" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="1"/>
+  <text x="110" y="265" text-anchor="middle" fill="#26215C" font-size="11" font-weight="600">Chargé de crédit · Initiateur</text>
+
+  <line x1="200" y1="214" x2="220" y2="290" stroke="#854F0B" stroke-width="1"/>
+  <rect x="20" y="285" width="180" height="32" rx="7" fill="#FEF3E2" stroke="#D4A017" stroke-width="1"/>
+  <text x="110" y="305" text-anchor="middle" fill="#633806" font-size="11" font-weight="600">Responsable bancaire</text>
+
+  <line x1="200" y1="214" x2="155" y2="330" stroke="#0F6E56" stroke-width="1"/>
+  <rect x="20" y="325" width="180" height="32" rx="7" fill="#E8F8F1" stroke="#0D7A4E" stroke-width="1"/>
+  <text x="110" y="345" text-anchor="middle" fill="#085041" font-size="11" font-weight="600">Banque tierce</text>
+
+  <line x1="200" y1="214" x2="195" y2="372" stroke="#0F6E56" stroke-width="1"/>
+  <rect x="20" y="365" width="180" height="32" rx="7" fill="#E8F8F1" stroke="#0D7A4E" stroke-width="1"/>
+  <text x="110" y="385" text-anchor="middle" fill="#085041" font-size="11" font-weight="600">Tribunal · Notaire</text>
+
+  <line x1="200" y1="214" x2="195" y2="412" stroke="#0F6E56" stroke-width="1"/>
+  <rect x="20" y="405" width="180" height="32" rx="7" fill="#E8F8F1" stroke="#0D7A4E" stroke-width="1"/>
+  <text x="110" y="425" text-anchor="middle" fill="#085041" font-size="11" font-weight="600">Service des Mines</text>
+
+  <line x1="200" y1="214" x2="195" y2="452" stroke="#0F6E56" stroke-width="1"/>
+  <rect x="20" y="445" width="180" height="32" rx="7" fill="#E8F8F1" stroke="#0D7A4E" stroke-width="1"/>
+  <text x="110" y="465" text-anchor="middle" fill="#085041" font-size="11" font-weight="600">Conservation foncière</text>
+
+  <line x1="200" y1="214" x2="195" y2="492" stroke="#0F6E56" stroke-width="1"/>
+  <rect x="20" y="485" width="180" height="32" rx="7" fill="#E8F8F1" stroke="#0D7A4E" stroke-width="1"/>
+  <text x="110" y="505" text-anchor="middle" fill="#085041" font-size="11" font-weight="600">Douanes</text>
+
+  <line x1="200" y1="214" x2="195" y2="532" stroke="#0F6E56" stroke-width="1"/>
+  <rect x="20" y="525" width="180" height="32" rx="7" fill="#E8F8F1" stroke="#0D7A4E" stroke-width="1"/>
+  <text x="110" y="545" text-anchor="middle" fill="#085041" font-size="11" font-weight="600">Débiteur · Particulier</text>
+
+  <!-- PROCESSUS - RIGHT TOP -->
+  <path d="M670 395 Q820 320 900 200" stroke="#1B3F7A" stroke-width="2" fill="none"/>
+  <rect x="780" y="170" width="240" height="44" rx="10" fill="#EEF3FF" stroke="#1B3F7A" stroke-width="1.5"/>
+  <text x="900" y="188" text-anchor="middle" fill="#0E1620" font-size="13" font-weight="700">⚙️ PROCESSUS</text>
+  <text x="900" y="204" text-anchor="middle" fill="#2952A3" font-size="10.5">5 phases séquentielles</text>
+
+  <line x1="900" y1="214" x2="980" y2="250" stroke="#534AB7" stroke-width="1"/>
+  <rect x="900" y="245" width="180" height="32" rx="7" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="1"/>
+  <text x="990" y="265" text-anchor="middle" fill="#26215C" font-size="11" font-weight="600">1. Initiation dossier</text>
+
+  <line x1="900" y1="214" x2="980" y2="290" stroke="#854F0B" stroke-width="1"/>
+  <rect x="900" y="285" width="180" height="32" rx="7" fill="#FEF3E2" stroke="#D4A017" stroke-width="1"/>
+  <text x="990" y="305" text-anchor="middle" fill="#633806" font-size="11" font-weight="600">2. Décision responsable</text>
+
+  <line x1="900" y1="214" x2="945" y2="330" stroke="#0F6E56" stroke-width="1"/>
+  <rect x="900" y="325" width="180" height="32" rx="7" fill="#E8F8F1" stroke="#0D7A4E" stroke-width="1"/>
+  <text x="990" y="345" text-anchor="middle" fill="#085041" font-size="11" font-weight="600">3. Génération QR / Réf.</text>
+
+  <line x1="900" y1="214" x2="905" y2="372" stroke="#0A2C53" stroke-width="1"/>
+  <rect x="900" y="365" width="180" height="32" rx="7" fill="#EEF3FF" stroke="#2952A3" stroke-width="1"/>
+  <text x="990" y="385" text-anchor="middle" fill="#042C53" font-size="11" font-weight="600">4. Édition attestation</text>
+
+  <line x1="900" y1="214" x2="905" y2="412" stroke="#9B1C1C" stroke-width="1"/>
+  <rect x="900" y="405" width="180" height="32" rx="7" fill="#FDF1F1" stroke="#C0392B" stroke-width="1"/>
+  <text x="990" y="425" text-anchor="middle" fill="#5A1010" font-size="11" font-weight="600">5. Vérification publique</text>
+
+  <!-- SÉCURITÉ - LEFT BOTTOM -->
+  <path d="M430 425 Q280 540 200 660" stroke="#1B3F7A" stroke-width="2" fill="none"/>
+  <rect x="80" y="640" width="240" height="44" rx="10" fill="#EEF3FF" stroke="#1B3F7A" stroke-width="1.5"/>
+  <text x="200" y="658" text-anchor="middle" fill="#0E1620" font-size="13" font-weight="700">🔒 SÉCURITÉ</text>
+  <text x="200" y="674" text-anchor="middle" fill="#2952A3" font-size="10.5">Conformité ISO 27001</text>
+
+  <line x1="200" y1="684" x2="155" y2="710" stroke="#0A2C53" stroke-width="1"/>
+  <rect x="20" y="705" width="180" height="28" rx="6" fill="#F4F4F8" stroke="#bcbcc5" stroke-width=".7"/>
+  <text x="110" y="723" text-anchor="middle" fill="#2A3A4E" font-size="10.5">Chiffrement TLS 1.3</text>
+
+  <line x1="200" y1="684" x2="195" y2="745" stroke="#0A2C53" stroke-width="1"/>
+  <rect x="20" y="740" width="180" height="28" rx="6" fill="#F4F4F8" stroke="#bcbcc5" stroke-width=".7"/>
+  <text x="110" y="758" text-anchor="middle" fill="#2A3A4E" font-size="10.5">QR SHA-256 horodaté</text>
+
+  <line x1="200" y1="684" x2="245" y2="780" stroke="#0A2C53" stroke-width="1"/>
+  <rect x="20" y="775" width="180" height="28" rx="6" fill="#F4F4F8" stroke="#bcbcc5" stroke-width=".7"/>
+  <text x="110" y="793" text-anchor="middle" fill="#2A3A4E" font-size="10.5">Traçabilité complète</text>
+
+  <!-- INTÉGRATIONS - RIGHT BOTTOM -->
+  <path d="M670 425 Q820 540 900 660" stroke="#1B3F7A" stroke-width="2" fill="none"/>
+  <rect x="780" y="640" width="240" height="44" rx="10" fill="#EEF3FF" stroke="#1B3F7A" stroke-width="1.5"/>
+  <text x="900" y="658" text-anchor="middle" fill="#0E1620" font-size="13" font-weight="700">🔗 INTÉGRATIONS</text>
+  <text x="900" y="674" text-anchor="middle" fill="#2952A3" font-size="10.5">6 banques partenaires</text>
+
+  <line x1="900" y1="684" x2="945" y2="710" stroke="#0A2C53" stroke-width="1"/>
+  <rect x="900" y="705" width="180" height="28" rx="6" fill="#F4F4F8" stroke="#bcbcc5" stroke-width=".7"/>
+  <text x="990" y="723" text-anchor="middle" fill="#2A3A4E" font-size="10.5">Attijariwafa · CIH · BP</text>
+
+  <line x1="900" y1="684" x2="905" y2="745" stroke="#0A2C53" stroke-width="1"/>
+  <rect x="900" y="740" width="180" height="28" rx="6" fill="#F4F4F8" stroke="#bcbcc5" stroke-width=".7"/>
+  <text x="990" y="758" text-anchor="middle" fill="#2A3A4E" font-size="10.5">BMCE · SG · CDM</text>
+
+  <line x1="900" y1="684" x2="855" y2="780" stroke="#0A2C53" stroke-width="1"/>
+  <rect x="900" y="775" width="180" height="28" rx="6" fill="#F4F4F8" stroke="#bcbcc5" stroke-width=".7"/>
+  <text x="990" y="793" text-anchor="middle" fill="#2A3A4E" font-size="10.5">Notif. email + SMS</text>
+
+  <!-- DATA MODEL center -->
+  <rect x="425" y="510" width="250" height="44" rx="10" fill="#FEF3E2" stroke="#D4A017" stroke-width="1.5"/>
+  <text x="550" y="528" text-anchor="middle" fill="#633806" font-size="13" font-weight="700">🗄️ MODÈLE DE DONNÉES</text>
+  <text x="550" y="544" text-anchor="middle" fill="#854F0B" font-size="10.5">Débiteur · Crédit · Justificatifs · QR</text>
+  <line x1="550" y1="440" x2="550" y2="510" stroke="#1B3F7A" stroke-width="2"/>
+
+  <!-- INTERFACES below center -->
+  <rect x="425" y="280" width="250" height="44" rx="10" fill="#EEF3FF" stroke="#1B3F7A" stroke-width="1.5"/>
+  <text x="550" y="298" text-anchor="middle" fill="#0E1620" font-size="13" font-weight="700">💻 3 INTERFACES</text>
+  <text x="550" y="314" text-anchor="middle" fill="#2952A3" font-size="10.5">Initiation · Décision · Vérification</text>
+  <line x1="550" y1="324" x2="550" y2="380" stroke="#1B3F7A" stroke-width="2"/>
+</svg>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESSUS -->
+<div class="panel" id="tab-processus">
+  <div class="pt">Processus détaillé — 5 phases du cycle</div>
+  <p class="ps">Vue détaillée des 5 phases du cycle de vie d'une mainlevée bancaire, de la saisie initiale jusqu'à la vérification par les organismes partenaires.</p>
+  <div class="proc-grid">
+    <div class="proc-col p1">
+      <div class="proc-head">Phase 1 · Initiation</div>
+      <div class="proc-body">
+        <div class="proc-item"><strong>Acteur :</strong> Chargé de crédit</div>
+        <div class="proc-item"><strong>Prérequis :</strong> Crédit intégralement remboursé</div>
+        <div class="proc-item">Saisie infos débiteur (CIN, RC, adresse)</div>
+        <div class="proc-item">Saisie engagement (type, réf., montant, immat./TF)</div>
+        <div class="proc-item">Dépôt quittance + attestation clôture</div>
+        <div class="proc-item"><strong>Sortie :</strong> Dossier transmis · Irréversible</div>
+      </div>
+    </div>
+    <div class="proc-col p2">
+      <div class="proc-head">Phase 2 · Décision</div>
+      <div class="proc-body">
+        <div class="proc-item"><strong>Acteur :</strong> Responsable bancaire</div>
+        <div class="proc-item"><strong>Mode :</strong> Lecture seule</div>
+        <div class="proc-item">Recherche multicritère (CIN, nom, réf.)</div>
+        <div class="proc-item">Consultation dossier + justificatifs</div>
+        <div class="proc-item">Validation OU rejet motivé</div>
+        <div class="proc-item"><strong>Sortie :</strong> Décision irréversible</div>
+      </div>
+    </div>
+    <div class="proc-col p3">
+      <div class="proc-head">Phase 3 · Génération</div>
+      <div class="proc-body">
+        <div class="proc-item"><strong>Acteur :</strong> Système (auto)</div>
+        <div class="proc-item">Génération réf. unique MLV-AAAA-XXXX</div>
+        <div class="proc-item">Génération QR code SHA-256 horodaté</div>
+        <div class="proc-item">Notification email + SMS initiateur</div>
+        <div class="proc-item">Enregistrement BDD + audit trail</div>
+        <div class="proc-item"><strong>Sortie :</strong> MLV consultable</div>
+      </div>
+    </div>
+    <div class="proc-col p4">
+      <div class="proc-head">Phase 4 · Attestation</div>
+      <div class="proc-body">
+        <div class="proc-item"><strong>Acteurs :</strong> Initiateur + Responsable</div>
+        <div class="proc-item">Signature électronique initiateur</div>
+        <div class="proc-item">Cosignature responsable</div>
+        <div class="proc-item">Génération PDF officiel avec QR</div>
+        <div class="proc-item">Remise au débiteur</div>
+        <div class="proc-item"><strong>Sortie :</strong> Attestation officielle</div>
+      </div>
+    </div>
+    <div class="proc-col p5">
+      <div class="proc-head">Phase 5 · Vérification</div>
+      <div class="proc-body">
+        <div class="proc-item"><strong>Acteurs :</strong> 7 rôles partenaires</div>
+        <div class="proc-item">Saisie réf. ou scan QR</div>
+        <div class="proc-item">Recherche fuzzy (CIN, nom, immat.)</div>
+        <div class="proc-item">Affichage authentique + données</div>
+        <div class="proc-item">Refus + instructions si invalide</div>
+        <div class="proc-item"><strong>Sortie :</strong> Document accepté/refusé</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IDENTIFIANTS -->
+<div class="panel" id="tab-creds">
+  <div class="pt">Identifiants de connexion</div>
+  <p class="ps">Comptes préconfigurés pour la démonstration des 3 interfaces.</p>
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-h"><h3>Tableau des accès</h3></div>
+    <div class="card-b" style="padding:0;overflow-x:auto">
+      <table>
+        <thead><tr><th>Interface</th><th>Nom</th><th>Identifiant</th><th>Mot de passe</th><th>Matricule</th><th>Agence</th><th>Accès</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge bp">✍️ Chargé crédit</span></td><td style="font-weight:600">Ahmed Bensalem</td><td class="mono">ahmed.bensalem</td><td class="mono">12345678</td><td class="mono">CC-001</td><td style="color:var(--ink3)">Casa Centre</td><td><span class="badge bk">Saisie + Transmission</span></td></tr>
+          <tr><td><span class="badge bg">✅ Responsable</span></td><td style="font-weight:600">Khalid Amrani</td><td class="mono">k.amrani</td><td class="mono">resp2025</td><td class="mono">RSP-044</td><td style="color:var(--ink3)">Hay Hassani</td><td><span class="badge bk">Validation + Stats</span></td></tr>
+          <tr><td><span class="badge bt">🔍 Vérification</span></td><td style="color:var(--ink3)">— (public)</td><td class="mono">aucun</td><td class="mono">aucun</td><td class="mono">—</td><td style="color:var(--ink3)">Tous</td><td><span class="badge bk">Consultation publique</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-h"><h3>Données de test pour la Vue 3 (vérification publique)</h3></div>
+    <div class="card-b">
+      <p style="font-size:13px;color:var(--ink2);margin-bottom:14px">Toutes ces saisies retournent un résultat <strong>authentique</strong> :</p>
+      <table style="margin-bottom:18px">
+        <thead><tr><th>Critère</th><th>Saisie</th><th>Résultat attendu</th></tr></thead>
+        <tbody>
+          <tr><td>Référence MLV</td><td class="mono">MLV-2025-0142</td><td>Karim Mansouri · Auto · 125 000 MAD</td></tr>
+          <tr><td>Référence MLV</td><td class="mono">MLV-2025-0140</td><td>SARL Al Nour · Conso · 45 000 MAD</td></tr>
+          <tr><td>Référence MLV</td><td class="mono">MLV-2025-0138</td><td>SCI Palmier Verde · Immo · 1 200 000 MAD</td></tr>
+          <tr><td>CIN</td><td class="mono">AB123456</td><td>Renvoie Karim Mansouri</td></tr>
+          <tr><td>Nom</td><td class="mono">Mansouri</td><td>Renvoie Karim Mansouri</td></tr>
+          <tr><td>Immatriculation</td><td class="mono">1234 A 56</td><td>Renvoie Karim Mansouri</td></tr>
+          <tr><td>Titre foncier</td><td class="mono">TF-12345/C</td><td>Renvoie SCI Palmier Verde</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px;color:var(--ink2);margin-bottom:10px">Critères qui retournent <strong>document non authentifié</strong> :</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:12px;background:#FDF1F1;color:var(--crimson);padding:5px 11px;border-radius:6px;border:1px solid rgba(155,28,28,.18);font-weight:600">REF-INCONNUE</span>
+        <span style="font-family:var(--mono);font-size:12px;background:#FDF1F1;color:var(--crimson);padding:5px 11px;border-radius:6px;border:1px solid rgba(155,28,28,.18);font-weight:600">ZZ000000</span>
+        <span style="font-family:var(--mono);font-size:12px;background:#FDF1F1;color:var(--crimson);padding:5px 11px;border-radius:6px;border:1px solid rgba(155,28,28,.18);font-weight:600">N'importe quelle valeur inconnue</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+await document.fonts.ready;
+mermaid.initialize({
+  startOnLoad: false, theme: 'base',
+  fontFamily: '"DM Sans", sans-serif',
+  themeVariables: {
+    fontSize: '13px',
+    primaryColor: '#EEF3FF', primaryTextColor: '#042C53', primaryBorderColor: '#85B7EB',
+    secondaryColor: '#E8F8F1', secondaryTextColor: '#04342C', secondaryBorderColor: '#5DCAA5',
+    tertiaryColor: '#FEF3E2', tertiaryTextColor: '#412402', tertiaryBorderColor: '#D4A017',
+    lineColor: '#6B7A8D', textColor: '#0E1620',
+    clusterBkg: '#F7F5F0', clusterBorder: '#EDEAE3'
+  }
+});
+
+const D = {
+  vue1: `flowchart TD
+  S([Crédit intégralement remboursé]) --> A
+  subgraph CC["✍️ Vue 1 — Chargé de crédit"]
+    direction TB
+    A[Connexion plateforme] --> B[Étape 1 · Saisie débiteur<br/>CIN/RC · Nom · Adresse · Téléphone]
+    B --> C[Étape 2 · Engagement bancaire<br/>Type crédit · Réf. dossier · Immat./TF · Montant]
+    C --> D[Étape 3 · Justificatifs<br/>Quittance remboursement + Attestation clôture]
+    D --> E{Validation locale<br/>du dossier ?}
+    E -- Incomplet --> B
+    E -- Complet --> F[Étape 4 · Récapitulatif<br/>Vérification finale]
+    F --> G[Transmission au responsable]
+    G --> H[Statut : En attente<br/>Lecture seule]
+  end
+  H --> END([Dossier transmis<br/>Action irréversible])
+  H -.->|Si rejet ultérieur| RETRY[Correction + nouvelle soumission]
+  RETRY --> B
+  style S fill:#E8F8F1,stroke:#0A5C3A,color:#04342C
+  style END fill:#EEF3FF,stroke:#1B3F7A,color:#042C53
+  style RETRY fill:#FDF1F1,stroke:#9B1C1C,color:#5A1010`,
+
+  vue2: `flowchart TD
+  S([Dossier reçu de l'initiateur]) --> A
+  subgraph RSP["✅ Vue 2 — Responsable bancaire"]
+    direction TB
+    A[Connexion + tableau de bord] --> B{Méthode<br/>d'accès ?}
+    B -- File d'attente --> C[Liste triée par priorité<br/>URGENT > NORMAL > NOUVEAU]
+    B -- Recherche --> D[Recherche multicritère]
+    D --> D1[Critères disponibles :<br/>CIN/RC · Nom · Prénom · Réf MLV<br/>· Réf dossier · Immat./TF · Statut · Période]
+    D1 --> D2[Résultats fuzzy avec<br/>correspondance partielle]
+    C --> E[Ouverture dossier détaillé]
+    D2 --> E
+    E --> F[Consultation lecture seule<br/>Débiteur · Crédit · Justificatifs]
+    F --> G{Décision<br/>responsable}
+    G -- Approuver --> H[✓ Validation<br/>Génération QR + référence unique<br/>SHA-256 horodaté]
+    G -- Rejeter --> I[✗ Rejet<br/>Motif obligatoire]
+    H --> J[Notification initiateur<br/>Email + SMS]
+    I --> K[Notification initiateur<br/>avec motif détaillé]
+  end
+  J --> ATT([Phase attestation PDF])
+  K --> CYCLE([Retour Vue 1<br/>Correction requise])
+  style S fill:#FEF3E2,stroke:#B45309,color:#633806
+  style ATT fill:#E8F8F1,stroke:#0A5C3A,color:#04342C
+  style CYCLE fill:#FDF1F1,stroke:#9B1C1C,color:#5A1010
+  style H fill:#E8F8F1,stroke:#0A5C3A
+  style I fill:#FDF1F1,stroke:#9B1C1C`,
+
+  vue3: `flowchart TD
+  S([Personne se présentant<br/>avec attestation MLV]) --> A
+  subgraph PUB["🔍 Vue 3 — Vérification publique"]
+    direction TB
+    A[Accès portail public] --> R{Sélection rôle<br/>du vérificateur}
+    R --> R1[🏦 Banque tierce]
+    R --> R2[⚖️ Tribunal]
+    R --> R3[📜 Notaire]
+    R --> R4[🚗 Service Mines]
+    R --> R5[🏛️ Conservation foncière]
+    R --> R6[🛂 Douanes]
+    R --> R7[👤 Particulier]
+    R1 & R2 & R3 & R4 & R5 & R6 & R7 --> M{Méthode<br/>vérification}
+    M -- Saisie manuelle --> M1[Réf MLV · CIN · Nom · Immat./TF<br/>Recherche multicritère fuzzy]
+    M -- Scan caméra --> M2[Lecture QR code<br/>SHA-256 horodaté]
+    M1 --> Q[Interrogation BDD sécurisée<br/>TLS 1.3]
+    M2 --> Q
+    Q --> RESULT{Document<br/>trouvé ?}
+    RESULT -- Oui --> OK[✓ Authentique<br/>Affichage données complètes :<br/>Débiteur · Crédit · Banque · QR + Hash]
+    RESULT -- Non --> ERR[✗ Non authentifié<br/>Instructions de refus<br/>Signalement fraude possible]
+    OK --> ACT[Actions selon rôle :<br/>Radiation hypothèque · Levée gage<br/>Acte notarié · Mise à jour registre]
+    ERR --> REFUS[Document refusé<br/>Débiteur doit contacter sa banque]
+  end
+  ACT --> END([Pièce acceptée<br/>Archivage horodaté])
+  REFUS --> RETRY([Émission nouvelle attestation<br/>par la banque créancière])
+  style S fill:#EEF3FF,stroke:#1B3F7A,color:#042C53
+  style END fill:#E8F8F1,stroke:#0A5C3A,color:#04342C
+  style RETRY fill:#FDF1F1,stroke:#9B1C1C,color:#5A1010
+  style OK fill:#E8F8F1,stroke:#0A5C3A
+  style ERR fill:#FDF1F1,stroke:#9B1C1C`,
+
+  global: `flowchart TD
+  S([💰 Crédit bancaire<br/>intégralement remboursé]) --> P1
+  subgraph P1["Phase 1 · Initiation — Vue 1 Chargé crédit"]
+    direction TB
+    A1[Saisie 4 étapes :<br/>Débiteur → Crédit → Justificatifs → Récap] --> A2[Transmission irréversible]
+  end
+  P1 --> P2
+  subgraph P2["Phase 2 · Décision — Vue 2 Responsable"]
+    direction TB
+    B1[Recherche/Sélection dossier] --> B2[Consultation lecture seule]
+    B2 --> B3{Validation ?}
+  end
+  B3 -- Rejet motivé --> CYCLE([↺ Retour Vue 1<br/>Correction requise]) --> P1
+  B3 -- Approbation --> P3
+  subgraph P3["Phase 3 · Génération — Système automatique"]
+    direction TB
+    C1[Réf unique MLV-AAAA-XXXX] --> C2[QR code SHA-256 horodaté]
+    C2 --> C3[Notification initiateur<br/>email + SMS]
+  end
+  P3 --> P4
+  subgraph P4["Phase 4 · Édition — Double signature"]
+    direction TB
+    D1[Signature initiateur] --> D2[Cosignature responsable]
+    D2 --> D3[PDF attestation officielle<br/>avec QR intégré]
+    D3 --> D4[Remise au débiteur]
+  end
+  P4 --> DEBITEUR([📄 Débiteur reçoit<br/>l'attestation officielle])
+  DEBITEUR --> P5
+  subgraph P5["Phase 5 · Vérification — Vue 3 Publique"]
+    direction TB
+    E1[Présentation à un partenaire<br/>banque · tribunal · notaire · mines<br/>· conservation · douanes · particulier] --> E2{Vérification<br/>QR ou réf.}
+    E2 -- Authentique --> E3[Actions selon rôle :<br/>Radiation · Levée · Acte]
+    E2 -- Refusée --> E4[Refus + signalement]
+  end
+  E3 --> END([✓ Cycle complet<br/>Désengagement effectif])
+  E4 --> RECREATE([Nouvelle attestation<br/>par la banque])
+  style S fill:#FEF3E2,stroke:#B45309,color:#633806
+  style DEBITEUR fill:#EEF3FF,stroke:#1B3F7A,color:#042C53
+  style END fill:#E8F8F1,stroke:#0A5C3A,color:#04342C
+  style CYCLE fill:#FDF1F1,stroke:#9B1C1C,color:#5A1010
+  style RECREATE fill:#FDF1F1,stroke:#9B1C1C,color:#5A1010`
+};
+
+window.diagSources = D;
+
+for (const k of ['vue1','vue2','vue3','global']) {
+  const {svg} = await mermaid.render('mmd-id-'+k, D[k]);
+  document.getElementById('mmd-'+k).innerHTML = svg;
+}
+</script>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function downloadMMD(key) {
+  const src = window.diagSources?.[key];
+  if (!src) return;
+  const blob = new Blob([src], {type: 'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'mlv-flowchart-' + key + '.mmd';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadSVG(containerId) {
+  const el = document.getElementById(containerId);
+  let svg = el.tagName === 'svg' ? el : el.querySelector('svg');
+  if (!svg) return;
+  const clone = svg.cloneNode(true);
+  if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  const data = new XMLSerializer().serializeToString(clone);
+  const blob = new Blob([data], {type: 'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = containerId + '.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
